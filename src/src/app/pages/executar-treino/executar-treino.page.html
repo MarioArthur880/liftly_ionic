@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="confirmarSair()" fill="clear">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ divisao?.nome }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-note class="timer-header">{{ tempoFormatado }}</ion-note>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  @if (!divisao) {
+    <div class="vazio-container">
+      <p>Treino não encontrado.</p>
+    </div>
+  } @else {
+
+    <!-- Progresso geral -->
+    <div class="progresso-container">
+      <div class="progresso-texto">
+        <span class="progresso-label">Séries concluídas</span>
+        <span class="progresso-valor">{{ totalSeriesFeitas }} / {{ totalSeriesPlanejasdas }}</span>
+      </div>
+      <div class="progresso-barra">
+        <div class="progresso-fill" [style.width.%]="percentualFeitos"></div>
+      </div>
+    </div>
+
+    <!-- Lista de exercícios -->
+    <div class="exercicios-lista">
+      @for (item of exercicios; track item.exercicioId) {
+
+        <div class="card-exercicio" [class.completo]="todasSeriesFeitas(item)">
+
+          <!-- Cabeçalho do exercício -->
+          <div class="exercicio-header">
+            <div class="exercicio-info">
+              <h3 class="exercicio-nome">{{ item.nome }}</h3>
+              <div class="exercicio-tags">
+                <span class="tag">{{ item.series }} séries</span>
+                <span class="tag">{{ item.repeticoes }} rep</span>
+                @if (item.carga > 0) {
+                  <span class="tag">{{ item.carga }} kg</span>
+                }
+              </div>
+            </div>
+            <!-- Botão marcar todas -->
+            <button
+              class="btn-marcar-todas"
+              [class.todas-marcadas]="todasSeriesFeitas(item)"
+              (click)="toggleTodas(item)">
+              @if (todasSeriesFeitas(item)) {
+                ✓ Todas
+              } @else {
+                Marcar todas
+              }
+            </button>
+          </div>
+
+          <!-- Progresso do exercício -->
+          <p class="ex-progresso">
+            {{ totalSeriesFeitasEx(item) }} de {{ item.series }} série(s) concluída(s)
+          </p>
+
+          <!-- Chips individuais por série -->
+          <div class="series-chips">
+            @for (feita of item.seriesFeitas; track $index) {
+              <button
+                class="chip-serie"
+                [class.chip-feita]="feita"
+                [class.chip-pendente]="!feita"
+                (click)="toggleSerie(item, $index)">
+                <span class="chip-numero">{{ $index + 1 }}</span>
+                <span class="chip-label">{{ feita ? '✓' : '○' }}</span>
+              </button>
+            }
+          </div>
+
+        </div>
+      }
+    </div>
+
+  }
+
+</ion-content>
+
+<!-- Botão fixo no rodapé -->
+@if (divisao) {
+  <ion-footer class="footer-acao">
+    <ion-toolbar>
+      <ion-button
+        expand="block"
+        class="btn-finalizar"
+        [disabled]="totalSeriesFeitas === 0"
+        (click)="finalizar()">
+        <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+        Finalizar ({{ totalSeriesFeitas }}/{{ totalSeriesPlanejasdas }} séries)
+      </ion-button>
+    </ion-toolbar>
+  </ion-footer>
+}

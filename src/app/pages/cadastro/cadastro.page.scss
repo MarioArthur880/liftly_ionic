@@ -1,0 +1,125 @@
+ion-content {
+  --background: var(--liftly-surface);
+  --ion-text-color: var(--liftly-text);
+}
+
+ion-toolbar {
+  --background: var(--liftly-surface);
+  --border-color: transparent;
+}
+
+.auth-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding-top: 24px;
+}
+
+.auth-titulo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--liftly-primary);
+  margin: 0 0 8px;
+}
+
+.auth-subtitulo {
+  font-size: 0.9rem;
+  color: var(--liftly-subtext);
+  margin: 0 0 24px;
+  line-height: 1.4;
+}
+
+.btn-google {
+  --border-radius: 14px;
+  --background: var(--liftly-surface);
+  --color: var(--liftly-text);
+  --border-color: var(--liftly-border);
+  height: 52px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.separador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--liftly-subtext);
+  font-size: 0.85rem;
+
+  &::before, &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--liftly-border);
+  }
+}
+
+ion-input.liftly-input {
+  --background: var(--liftly-input-bg);
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --color: var(--liftly-text);
+  --placeholder-color: var(--liftly-placeholder);
+  --highlight-color-focused: var(--liftly-primary);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  min-height: 58px;
+  color: var(--liftly-text);
+
+  &::part(label) { color: var(--liftly-label); }
+  &::part(floating-label) { color: var(--liftly-label); }
+}
+
+.icone-olho {
+  color: var(--liftly-muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.btn-primario {
+  --background: var(--liftly-contrast-bg);
+  --border-radius: 14px;
+  --color: var(--liftly-contrast-color);
+  font-weight: 700;
+  height: 52px;
+  margin-top: 8px;
+}
+
+.link-acao {
+  color: var(--liftly-primary);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.auth-rodape {
+  font-size: 0.9rem;
+  color: var(--liftly-label);
+  margin-top: 24px;
+}
+
+.termos-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 8px 0 16px;
+}
+
+.checkbox-termos {
+  --size: 20px;
+  --checkbox-background-checked: var(--liftly-primary);
+  --border-color: var(--liftly-placeholder);
+  --border-color-checked: var(--liftly-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.termos-texto {
+  font-size: 0.85rem;
+  color: var(--liftly-label);
+  margin: 0;
+  line-height: 1.4;
+}

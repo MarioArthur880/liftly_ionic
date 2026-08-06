@@ -1,0 +1,77 @@
+ion-content {
+  --background: var(--liftly-surface);
+  --ion-text-color: var(--liftly-text);
+}
+
+ion-toolbar {
+  --background: var(--liftly-surface);
+  --border-color: transparent;
+}
+
+.auth-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding-top: 24px;
+}
+
+.auth-titulo {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--liftly-primary);
+  margin: 0 0 8px;
+}
+
+.auth-subtitulo {
+  font-size: 0.9rem;
+  color: var(--liftly-subtext);
+  margin: 0 0 32px;
+  line-height: 1.4;
+}
+
+.otp-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.otp-box {
+  --background: var(--liftly-input-bg);
+  --border-radius: 12px;
+  --padding-start: 0;
+  --padding-end: 0;
+  --color: var(--liftly-text);
+  --placeholder-color: var(--liftly-placeholder);
+  border-radius: 12px;
+  width: 52px;
+  height: 56px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--liftly-text);
+  border: 2px solid var(--liftly-border);
+
+  &.has-value {
+    border-color: var(--liftly-primary);
+  }
+}
+
+.btn-primario {
+  --background: var(--liftly-contrast-bg);
+  --border-radius: 14px;
+  --color: var(--liftly-contrast-color);
+  font-weight: 700;
+  height: 52px;
+}
+
+.reenvio {
+  font-size: 0.9rem;
+  color: var(--liftly-label);
+  margin-top: 20px;
+}
+
+.link-acao {
+  color: var(--liftly-primary);
+  font-weight: 600;
+  cursor: pointer;
+}

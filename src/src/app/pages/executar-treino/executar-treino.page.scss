@@ -1,0 +1,223 @@
+ion-content {
+  --background: #f7f8fa;
+}
+
+ion-toolbar {
+  --background: #ffffff;
+}
+
+.timer-header {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #00B4D8;
+  padding-right: 8px;
+}
+
+/* ── Progresso geral ── */
+.progresso-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.progresso-texto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.progresso-label {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.progresso-valor {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #111;
+}
+
+.progresso-barra {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progresso-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00B4D8, #023E8A);
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+/* ── Cards de exercício ── */
+.exercicios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 100px;
+}
+
+.card-exercicio {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+
+  &.completo {
+    border-color: #00B4D8;
+  }
+}
+
+/* ── Cabeçalho do exercício ── */
+.exercicio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.exercicio-nome {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 6px;
+}
+
+.exercicio-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #f0f9fc;
+  color: #00B4D8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+
+.btn-marcar-todas {
+  background: #f5f5f5;
+  color: #555;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
+  margin-left: 8px;
+
+  &.todas-marcadas {
+    background: #00B4D8;
+    color: #ffffff;
+  }
+}
+
+.ex-progresso {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin: 0 0 14px;
+}
+
+/* ── Chips de série ── */
+.series-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip-serie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 62px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+
+  &:active {
+    transform: scale(0.93);
+  }
+}
+
+.chip-pendente {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+
+  .chip-numero {
+    color: #888;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .chip-label {
+    color: #ccc;
+    font-size: 0.85rem;
+  }
+}
+
+.chip-feita {
+  background: #00B4D8;
+  border-color: #00B4D8;
+
+  .chip-numero {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .chip-label {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+}
+
+.chip-numero {
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.chip-label {
+  line-height: 1;
+}
+
+/* ── Footer ── */
+.footer-acao ion-toolbar {
+  --background: #ffffff;
+  padding: 8px 16px 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.btn-finalizar {
+  --background: #000000;
+  --border-radius: 14px;
+  --color: #ffffff;
+  font-weight: 700;
+  height: 52px;
+}
+
+.vazio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  color: #aaa;
+}

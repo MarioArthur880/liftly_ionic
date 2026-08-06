@@ -1,0 +1,49 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/comunidade"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ grupo.nome || 'Grupo' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="convidarPorEmail()">
+        <ion-icon name="person-add-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  @if (!carregando) {
+    <div class="codigo-card">
+      <ion-icon name="key-outline"></ion-icon>
+      <div>
+        <p class="codigo-label">Código de convite</p>
+        <p class="codigo-valor">{{ grupo.codigoConvite }}</p>
+      </div>
+    </div>
+
+    <h3 class="secao-titulo">
+      <ion-icon name="trophy-outline"></ion-icon>
+      Ranking de sequência
+    </h3>
+    <p class="secao-sub">Quem treina todo dia sobe no ranking. Não deixe a sequência quebrar!</p>
+
+    <ion-list>
+      @for (membro of grupo.ranking; track membro.usuarioId; let i = $index) {
+        <ion-item class="item-membro" [class.item-voce]="membro.usuarioId === usuarioId" detail="false">
+          <div class="posicao" slot="start">{{ i + 1 }}º</div>
+          <ion-label>
+            <h2 class="membro-nome">{{ membro.nome }}</h2>
+            <p class="membro-info">{{ membro.treinosNaSemana }} treino(s) nos últimos 7 dias</p>
+          </ion-label>
+          <div class="streak" slot="end">
+            <ion-icon name="flame-outline"></ion-icon>
+            <span>{{ membro.streakAtual }}</span>
+          </div>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+</ion-content>

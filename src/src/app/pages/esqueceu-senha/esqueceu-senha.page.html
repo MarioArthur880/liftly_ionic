@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login" text=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="auth-container">
+
+    <h1 class="auth-titulo">Forget Password</h1>
+    <p class="auth-subtitulo">Informe seu e-mail ou número de telefone para receber o código de verificação.</p>
+
+    <form [formGroup]="formGroup" (ngSubmit)="continuar()">
+
+      <ion-item class="liftly-input">
+        <ion-label position="floating">E-mail / Número de celular</ion-label>
+        <ion-input type="text" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-button
+        type="submit"
+        expand="block"
+        class="btn-primario"
+        [disabled]="!formGroup.valid">
+        Continuar
+      </ion-button>
+
+    </form>
+
+  </div>
+
+</ion-content>

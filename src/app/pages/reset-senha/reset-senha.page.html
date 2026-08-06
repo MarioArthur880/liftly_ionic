@@ -1,0 +1,57 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/otp" text=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="auth-container">
+
+    <h1 class="auth-titulo">Reset Password</h1>
+    <p class="auth-subtitulo">Crie uma nova senha segura para sua conta.</p>
+
+    <form [formGroup]="formGroup" (ngSubmit)="redefinir()">
+
+      <ion-item class="liftly-input">
+        <ion-label position="floating">Nova senha</ion-label>
+        <ion-input [type]="senhaVisivel ? 'text' : 'password'" formControlName="novaSenha"></ion-input>
+        <ion-icon
+          [name]="senhaVisivel ? 'eye-outline' : 'eye-off-outline'"
+          slot="end"
+          class="icone-olho"
+          (click)="senhaVisivel = !senhaVisivel">
+        </ion-icon>
+      </ion-item>
+
+      <ion-item class="liftly-input">
+        <ion-label position="floating">Confirmar senha</ion-label>
+        <ion-input [type]="confirmacaoVisivel ? 'text' : 'password'" formControlName="confirmacao"></ion-input>
+        <ion-icon
+          [name]="confirmacaoVisivel ? 'eye-outline' : 'eye-off-outline'"
+          slot="end"
+          class="icone-olho"
+          (click)="confirmacaoVisivel = !confirmacaoVisivel">
+        </ion-icon>
+      </ion-item>
+
+      <ion-button
+        type="submit"
+        expand="block"
+        class="btn-primario"
+        [disabled]="!formGroup.valid || enviando">
+        @if (enviando) {
+          <ion-spinner name="crescent" slot="start"></ion-spinner>
+          Enviando...
+        } @else {
+          Redefinir Senha
+        }
+      </ion-button>
+
+    </form>
+
+  </div>
+
+</ion-content>

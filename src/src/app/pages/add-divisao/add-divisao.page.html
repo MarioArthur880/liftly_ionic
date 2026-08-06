@@ -1,0 +1,213 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/divisoes" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ modoEdicao ? 'Editar Divisão' : 'Nova Divisão' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="salvar()" class="btn-salvar" [disabled]="!formGroup.valid">
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Informações da divisão -->
+  <div class="secao">
+    <h3 class="secao-titulo">Informações da Divisão</h3>
+    <form [formGroup]="formGroup">
+      <ion-input
+        class="liftly-input"
+        type="text"
+        formControlName="nome"
+        label="Nome da divisão *"
+        label-placement="floating"
+        placeholder="ex: Push, Pull, Legs...">
+      </ion-input>
+      <ion-textarea
+        class="liftly-input"
+        formControlName="descricao"
+        [rows]="2"
+        label="Descrição (opcional)"
+        label-placement="floating"
+        placeholder="Descreva o foco desta divisão...">
+      </ion-textarea>
+    </form>
+  </div>
+
+  <!-- Lista de exercícios adicionados -->
+  <div class="secao">
+    <h3 class="secao-titulo">
+      Exercícios
+      <span class="badge-count">{{ divisao.exercicios.length }}</span>
+    </h3>
+
+    @if (divisao.exercicios.length === 0) {
+      <div class="exercicios-vazio">
+        <ion-icon name="search-outline" class="vazio-icon"></ion-icon>
+        <p>Nenhum exercício adicionado.<br>Busque e adicione pelo catálogo abaixo.</p>
+      </div>
+    } @else {
+      <ion-list class="lista-exercicios">
+        @for (ex of divisao.exercicios; track ex.id) {
+          <ion-item class="item-exercicio">
+            <div class="ex-grupo-tag" slot="start">{{ ex.grupoMuscular.substring(0, 3).toUpperCase() }}</div>
+            <ion-label>
+              <h3 class="ex-nome">{{ ex.nome }}</h3>
+              <p class="ex-detalhe">{{ ex.series }}x{{ ex.repeticoes }}
+                @if (ex.carga > 0) { · {{ ex.carga }}kg }
+              </p>
+              @if (ex.observacao) {
+                <p class="ex-obs">{{ ex.observacao }}</p>
+              }
+            </ion-label>
+            <ion-button slot="end" fill="clear" color="danger" size="small" (click)="removerExercicio(ex)">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        }
+      </ion-list>
+    }
+
+    <ion-button expand="block" class="btn-add-exercicio" (click)="abrirModal()">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      Adicionar do Catálogo
+    </ion-button>
+  </div>
+
+  <!-- Botão salvar -->
+  <ion-button expand="block" class="btn-salvar-final" (click)="salvar()" [disabled]="!formGroup.valid">
+    {{ modoEdicao ? 'Salvar alterações' : 'Criar Divisão' }}
+  </ion-button>
+
+</ion-content>
+
+<!-- Modal: Catálogo de Exercícios -->
+<ion-modal [isOpen]="modalAberto" (didDismiss)="fecharModal()" [breakpoints]="[0, 0.92]" [initialBreakpoint]="0.92">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="modal-titulo">
+          @if (exercicioSelecionado) { Configurar Exercício } @else { Catálogo de Exercícios }
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="fecharModal()" fill="clear">
+            <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="modal-content ion-padding">
+
+      <!-- TELA 1: Busca e seleção -->
+      @if (!exercicioSelecionado) {
+
+        <ion-searchbar
+          [(ngModel)]="termoBusca"
+          (ionInput)="onBusca()"
+          placeholder="Buscar exercício..."
+          class="searchbar-catalogo"
+          debounce="200">
+        </ion-searchbar>
+
+        <!-- Chips de grupo muscular -->
+        <div class="chips-grupos">
+          @for (grupo of grupos; track grupo) {
+            <ion-chip
+              [class.chip-ativo]="grupoFiltro === grupo"
+              (click)="filtrarGrupo(grupo)">
+              {{ grupo }}
+            </ion-chip>
+          }
+        </div>
+
+        <p class="resultado-count">{{ resultadosBusca.length }} exercício(s)</p>
+
+        <ion-list class="lista-catalogo">
+          @for (ex of resultadosBusca; track ex.id) {
+            <ion-item class="item-catalogo" (click)="selecionarExercicio(ex)" button detail="false">
+              <div class="catalogo-grupo-tag" slot="start">{{ ex.grupoMuscular.substring(0, 3).toUpperCase() }}</div>
+              <ion-label>
+                <h3 class="catalogo-nome">{{ ex.nome }}</h3>
+                <p class="catalogo-info">{{ ex.grupoMuscular }} · {{ ex.equipamento }}</p>
+              </ion-label>
+              <ion-icon name="add-circle-outline" slot="end" class="catalogo-add-icon"></ion-icon>
+            </ion-item>
+          }
+          @if (resultadosBusca.length === 0) {
+            <div class="sem-resultado">
+              <p>Nenhum exercício encontrado.</p>
+            </div>
+          }
+        </ion-list>
+
+      }
+
+      <!-- TELA 2: Configurar séries/reps/carga -->
+      @if (exercicioSelecionado) {
+
+        <div class="ex-selecionado-card">
+          <div class="ex-selecionado-tag">{{ exercicioSelecionado.grupoMuscular }}</div>
+          <h2 class="ex-selecionado-nome">{{ exercicioSelecionado.nome }}</h2>
+          <p class="ex-selecionado-desc">{{ exercicioSelecionado.descricao }}</p>
+          <p class="ex-selecionado-equip">🏋️ {{ exercicioSelecionado.equipamento }}</p>
+        </div>
+
+        <form [formGroup]="formConfig" class="form-config">
+
+          <div class="row-tres">
+            <ion-input
+              class="liftly-input"
+              type="number"
+              formControlName="series"
+              label="Séries"
+              label-placement="floating"
+              min="1">
+            </ion-input>
+            <ion-input
+              class="liftly-input"
+              type="number"
+              formControlName="repeticoes"
+              label="Reps"
+              label-placement="floating"
+              min="1">
+            </ion-input>
+            <ion-input
+              class="liftly-input"
+              type="number"
+              formControlName="carga"
+              label="Carga (kg)"
+              label-placement="floating"
+              min="0">
+            </ion-input>
+          </div>
+
+          <ion-input
+            class="liftly-input"
+            type="text"
+            formControlName="observacao"
+            label="Observação"
+            label-placement="floating"
+            placeholder="ex: execução lenta, dropset...">
+          </ion-input>
+
+        </form>
+
+        <div class="config-acoes">
+          <ion-button fill="outline" class="btn-voltar" (click)="voltarParaBusca()">
+            Voltar
+          </ion-button>
+          <ion-button class="btn-confirmar" (click)="confirmarExercicio()" [disabled]="!formConfig.valid">
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+            Adicionar
+          </ion-button>
+        </div>
+
+      }
+
+    </ion-content>
+  </ng-template>
+</ion-modal>

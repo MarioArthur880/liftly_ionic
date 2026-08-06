@@ -1,0 +1,103 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Histórico</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  @if (historico.length === 0) {
+    <div class="vazio-container">
+      <ion-icon name="time-outline" class="vazio-icon"></ion-icon>
+      <h3>Sem registros ainda</h3>
+      <p>Inicie um treino na tela inicial para ele aparecer aqui.</p>
+    </div>
+  } @else {
+
+    @for (sessao of historico; track sessao.id) {
+      <div class="card-sessao">
+
+        <!-- Cabeçalho da sessão -->
+        <div class="sessao-topo">
+          <div class="sessao-icone">
+            <ion-icon name="barbell-outline"></ion-icon>
+          </div>
+          <div class="sessao-header">
+            <h2 class="sessao-nome">{{ sessao.divisaoNome }}</h2>
+            <p class="sessao-data">{{ formatarData(sessao.dataInicio) }}</p>
+          </div>
+          <div class="sessao-duracao">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ calcularDuracao(sessao.dataInicio, sessao.dataFim) }}</span>
+          </div>
+        </div>
+
+        <!-- Stats resumidas -->
+        <div class="sessao-stats">
+          <div class="stat-item">
+            <span class="stat-num">{{ totalSeriesFeitas(sessao) }}</span>
+            <span class="stat-desc">séries feitas</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-item">
+            <span class="stat-num">{{ totalSeriesPlanejadas(sessao) }}</span>
+            <span class="stat-desc">planejadas</span>
+          </div>
+          <div class="stat-sep"></div>
+          <div class="stat-item">
+            <span class="stat-num stat-pct">{{ percentual(sessao) }}%</span>
+            <span class="stat-desc">concluído</span>
+          </div>
+        </div>
+
+        <!-- Barra de progresso da sessão -->
+        <div class="sessao-barra">
+          <div
+            class="sessao-barra-fill"
+            [style.width.%]="percentual(sessao)">
+          </div>
+        </div>
+
+        <!-- Botão expandir/recolher -->
+        <button class="btn-expandir" (click)="toggleExpandir(sessao.id)">
+          {{ estaExpandido(sessao.id) ? '▲ Recolher exercícios' : '▼ Ver exercícios e séries' }}
+        </button>
+
+        <!-- Detalhes dos exercícios (expandível) -->
+        @if (estaExpandido(sessao.id)) {
+          <div class="exercicios-detalhe">
+            @for (ex of sessao.exercicios; track ex.exercicioId) {
+              <div class="ex-bloco" [class.ex-completo]="exCompleto(ex)">
+
+                <!-- Nome e resultado do exercício -->
+                <div class="ex-cabecalho">
+                  <div class="ex-status-dot" [class.dot-verde]="exCompleto(ex)" [class.dot-amarelo]="!exCompleto(ex) && seriesFeitasEx(ex) > 0" [class.dot-cinza]="seriesFeitasEx(ex) === 0"></div>
+                  <div class="ex-info">
+                    <span class="ex-nome">{{ ex.nome }}</span>
+                    <span class="ex-contagem">
+                      {{ seriesFeitasEx(ex) }}/{{ ex.series }} séries · {{ ex.repeticoes }} rep
+                      @if (ex.carga > 0) { · {{ ex.carga }} kg }
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Chips individuais de cada série -->
+                <div class="series-chips-historico">
+                  @for (feita of ex.seriesFeitas; track $index) {
+                    <div class="chip-hist" [class.chip-hist-feita]="feita" [class.chip-hist-nao]="!feita">
+                      <span class="chip-hist-num">{{ $index + 1 }}</span>
+                      <span class="chip-hist-status">{{ feita ? '✓' : '✗' }}</span>
+                    </div>
+                  }
+                </div>
+
+              </div>
+            }
+          </div>
+        }
+
+      </div>
+    }
+  }
+
+</ion-content>

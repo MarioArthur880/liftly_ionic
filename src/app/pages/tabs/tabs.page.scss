@@ -1,0 +1,15 @@
+ion-tab-bar {
+  --background: var(--liftly-surface);
+  border-top: 1px solid var(--liftly-border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+ion-tab-button {
+  --color: var(--liftly-placeholder);
+  --color-selected: var(--liftly-primary);
+
+  ion-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+}

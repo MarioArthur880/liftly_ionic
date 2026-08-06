@@ -1,0 +1,117 @@
+ion-content {
+  --background: var(--liftly-page-bg);
+}
+
+ion-toolbar {
+  --background: var(--liftly-surface);
+
+  ion-title {
+    font-weight: 700;
+    color: var(--liftly-text);
+  }
+}
+
+.codigo-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--liftly-surface);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px var(--liftly-shadow);
+
+  ion-icon {
+    font-size: 1.6rem;
+    color: var(--liftly-primary);
+  }
+}
+
+.codigo-label {
+  font-size: 0.78rem;
+  color: var(--liftly-muted);
+  margin: 0;
+}
+
+.codigo-valor {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--liftly-text);
+  margin: 2px 0 0;
+}
+
+.secao-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--liftly-text);
+  margin: 0 0 4px;
+
+  ion-icon {
+    color: var(--liftly-primary);
+  }
+}
+
+.secao-sub {
+  font-size: 0.82rem;
+  color: var(--liftly-subtext);
+  margin: 0 0 16px;
+}
+
+ion-list {
+  background: transparent;
+  padding: 0;
+}
+
+.item-membro {
+  --background: var(--liftly-surface);
+  --border-radius: 16px;
+  --padding-start: 14px;
+  --inner-padding-end: 14px;
+  --min-height: 68px;
+  margin-bottom: 10px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px var(--liftly-shadow);
+  border: 2px solid transparent;
+}
+
+.item-voce {
+  border-color: var(--liftly-primary);
+}
+
+.posicao {
+  width: 32px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--liftly-muted);
+  text-align: center;
+}
+
+.membro-nome {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--liftly-text);
+  margin-bottom: 2px;
+}
+
+.membro-info {
+  font-size: 0.78rem;
+  color: var(--liftly-muted);
+  margin: 0;
+}
+
+.streak {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--liftly-primary);
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+}

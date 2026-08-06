@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      <span class="logo-texto">Liftly</span>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Saudação -->
+  <div class="saudacao">
+    <div>
+      <p class="saudacao-sub">Bem-vindo de volta 💪</p>
+      <h2 class="saudacao-nome">{{ usuario.nome || 'Atleta' }}</h2>
+    </div>
+  </div>
+
+  <!-- Cards de estatísticas -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <ion-icon name="barbell-outline" class="stat-icon"></ion-icon>
+      <span class="stat-valor">{{ totalTreinos }}</span>
+      <span class="stat-label">Fichas</span>
+    </div>
+    <div class="stat-card">
+      <ion-icon name="flame-outline" class="stat-icon"></ion-icon>
+      <span class="stat-valor">{{ totalSessoes }}</span>
+      <span class="stat-label">Sessões</span>
+    </div>
+    <div class="stat-card">
+      <ion-icon name="trophy-outline" class="stat-icon"></ion-icon>
+      <span class="stat-valor">0</span>
+      <span class="stat-label">Recordes</span>
+    </div>
+  </div>
+
+  <!-- Escolher treino do dia -->
+  <div class="secao-header">
+    <h3 class="secao-titulo">Treinar hoje</h3>
+    <a routerLink="/tabs/divisoes" class="ver-todos">Gerenciar</a>
+  </div>
+
+  @if (divisoes.length === 0) {
+    <div class="vazio-container">
+      <ion-icon name="barbell-outline" class="vazio-icon"></ion-icon>
+      <p class="vazio-texto">Nenhum treino montado ainda.</p>
+      <ion-button routerLink="/add-divisao" class="btn-nova-divisao" size="small">
+        Montar meu primeiro treino
+      </ion-button>
+    </div>
+  } @else {
+    <p class="instrucao-escolha">Escolha qual treino você vai fazer hoje:</p>
+    @for (divisao of divisoes; track divisao.id) {
+      <div class="card-treino" (click)="iniciarTreino(divisao)">
+        <div class="card-treino-esq">
+          <div class="card-treino-icone">
+            <ion-icon name="barbell-outline"></ion-icon>
+          </div>
+          <div>
+            <h3 class="card-treino-nome">{{ divisao.nome }}</h3>
+            <p class="card-treino-info">{{ divisao.exercicios.length }} exercício(s)</p>
+            @if (divisao.descricao) {
+              <p class="card-treino-desc">{{ divisao.descricao }}</p>
+            }
+          </div>
+        </div>
+        <div class="card-treino-play">
+          <ion-icon name="play-circle-outline"></ion-icon>
+        </div>
+      </div>
+    }
+  }
+
+</ion-content>

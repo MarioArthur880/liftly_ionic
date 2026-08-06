@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="auth-container">
+
+    <h1 class="auth-titulo">Sign Up</h1>
+    <p class="auth-subtitulo">Crie sua conta e comece a registrar seus treinos.</p>
+
+    <ion-button expand="block" class="btn-google" fill="outline">
+      <ion-icon name="logo-google" slot="start"></ion-icon>
+      Google
+    </ion-button>
+
+    <div class="separador">ou</div>
+
+    <form [formGroup]="formGroup" (ngSubmit)="cadastrar()">
+
+      <ion-input
+        class="liftly-input"
+        type="text"
+        formControlName="nome"
+        label="Nome"
+        label-placement="floating"
+        placeholder="Seu nome">
+      </ion-input>
+
+      <ion-input
+        class="liftly-input"
+        type="email"
+        formControlName="email"
+        label="E-mail"
+        label-placement="floating"
+        placeholder="seu@email.com">
+      </ion-input>
+
+      <ion-input
+        class="liftly-input"
+        [type]="senhaVisivel ? 'text' : 'password'"
+        formControlName="senha"
+        label="Senha"
+        label-placement="floating">
+        <ion-icon
+          [name]="senhaVisivel ? 'eye-outline' : 'eye-off-outline'"
+          slot="end"
+          class="icone-olho"
+          (click)="toggleSenha()">
+        </ion-icon>
+      </ion-input>
+
+      <div class="termos-row">
+        <ion-checkbox
+          [(ngModel)]="aceitouTermos"
+          [ngModelOptions]="{standalone: true}"
+          class="checkbox-termos">
+        </ion-checkbox>
+        <p class="termos-texto">
+          Estou de acordo com os
+          <span class="link-acao">Termos de Serviço</span> e
+          <span class="link-acao">Política de privacidade</span>
+        </p>
+      </div>
+
+      <ion-button
+        type="submit"
+        expand="block"
+        class="btn-primario"
+        [disabled]="!formGroup.valid">
+        Criar Conta
+      </ion-button>
+
+    </form>
+
+    <p class="auth-rodape ion-text-center">
+      Já tem conta?
+      <a routerLink="/login" class="link-acao">Sign In</a>
+    </p>
+
+  </div>
+
+</ion-content>

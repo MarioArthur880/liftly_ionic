@@ -1,0 +1,261 @@
+ion-content {
+  --background: var(--liftly-page-bg);
+}
+
+ion-toolbar {
+  --background: var(--liftly-surface);
+  ion-title { font-weight: 700; font-size: 1rem; }
+}
+
+.btn-salvar { --color: var(--liftly-primary); font-size: 1.3rem; }
+
+// ── Seções ────────────────────────────────────────────
+.secao {
+  background: var(--liftly-surface);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px var(--liftly-shadow);
+}
+
+.secao-titulo {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--liftly-text);
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-count {
+  background: var(--liftly-primary);
+  color: #fff;
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+// ── Inputs ────────────────────────────────────────────
+ion-input.liftly-input, ion-textarea.liftly-input {
+  --background: var(--liftly-input-bg);
+  --border-radius: 12px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --color: var(--liftly-text);
+  --placeholder-color: var(--liftly-placeholder);
+  --highlight-color-focused: var(--liftly-primary);
+  border-radius: 12px;
+  margin-bottom: 10px;
+  min-height: 58px;
+}
+
+.row-tres {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+// ── Lista exercícios adicionados ──────────────────────
+.lista-exercicios { background: transparent; padding: 0; }
+
+.item-exercicio {
+  --background: var(--liftly-surface);
+  --border-radius: 12px;
+  --padding-start: 10px;
+  --inner-padding-end: 6px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--liftly-border);
+}
+
+.ex-grupo-tag {
+  background: var(--liftly-surface-tint);
+  color: var(--liftly-primary);
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 4px 6px;
+  letter-spacing: 0.5px;
+  min-width: 34px;
+  text-align: center;
+}
+
+.ex-nome { font-size: 0.9rem; font-weight: 700; color: var(--liftly-text); margin-bottom: 2px; }
+.ex-detalhe { font-size: 0.8rem; color: var(--liftly-primary); margin: 0; font-weight: 500; }
+.ex-obs { font-size: 0.75rem; color: var(--liftly-placeholder); margin: 2px 0 0; font-style: italic; }
+
+.exercicios-vazio {
+  text-align: center;
+  padding: 20px 12px 8px;
+  .vazio-icon { font-size: 2rem; color: var(--liftly-border); display: block; margin-bottom: 8px; }
+  p { color: var(--liftly-placeholder); font-size: 0.85rem; margin: 0; line-height: 1.5; }
+}
+
+.btn-add-exercicio {
+  --background: var(--liftly-surface-tint);
+  --color: var(--liftly-primary);
+  --border-radius: 12px;
+  font-weight: 700;
+  margin-top: 12px;
+  height: 48px;
+}
+
+.btn-salvar-final {
+  --background: var(--liftly-contrast-bg);
+  --border-radius: 14px;
+  --color: var(--liftly-contrast-color);
+  font-weight: 700;
+  height: 52px;
+  margin-bottom: 32px;
+}
+
+// ── Modal ─────────────────────────────────────────────
+.modal-titulo { font-weight: 700; font-size: 0.95rem; }
+
+.modal-content { --background: var(--liftly-page-bg); }
+
+.searchbar-catalogo {
+  --background: var(--liftly-surface);
+  --border-radius: 12px;
+  --box-shadow: 0 2px 8px var(--liftly-shadow);
+  --placeholder-color: var(--liftly-placeholder);
+  --color: var(--liftly-text);
+  padding: 0 0 8px;
+}
+
+.chips-grupos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0 12px;
+
+  ion-chip {
+    --background: var(--liftly-surface);
+    --color: var(--liftly-label);
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 1.5px solid var(--liftly-border);
+    margin: 0;
+    height: 30px;
+
+    &.chip-ativo {
+      --background: var(--liftly-primary);
+      --color: #ffffff;
+      border-color: var(--liftly-primary);
+    }
+  }
+}
+
+.resultado-count {
+  font-size: 0.78rem;
+  color: var(--liftly-placeholder);
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+
+.lista-catalogo { background: transparent; padding: 0; }
+
+.item-catalogo {
+  --background: var(--liftly-surface);
+  --border-radius: 12px;
+  --padding-start: 10px;
+  --inner-padding-end: 10px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px var(--liftly-shadow);
+  cursor: pointer;
+}
+
+.catalogo-grupo-tag {
+  background: var(--liftly-surface-tint);
+  color: var(--liftly-primary);
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 4px 6px;
+  letter-spacing: 0.5px;
+  min-width: 34px;
+  text-align: center;
+}
+
+.catalogo-nome { font-size: 0.9rem; font-weight: 700; color: var(--liftly-text); }
+.catalogo-info { font-size: 0.78rem; color: var(--liftly-muted); margin: 0; }
+
+.catalogo-add-icon { font-size: 1.4rem; color: var(--liftly-primary); }
+
+.sem-resultado {
+  text-align: center;
+  padding: 32px;
+  p { color: var(--liftly-placeholder); font-size: 0.85rem; }
+}
+
+// ── Tela de configuração ──────────────────────────────
+.ex-selecionado-card {
+  background: var(--liftly-surface);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px var(--liftly-shadow);
+}
+
+.ex-selecionado-tag {
+  display: inline-block;
+  background: var(--liftly-surface-tint);
+  color: var(--liftly-primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.ex-selecionado-nome {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--liftly-text);
+  margin: 0 0 6px;
+}
+
+.ex-selecionado-desc {
+  font-size: 0.85rem;
+  color: var(--liftly-subtext);
+  margin: 0 0 4px;
+}
+
+.ex-selecionado-equip {
+  font-size: 0.82rem;
+  color: var(--liftly-placeholder);
+  margin: 0;
+}
+
+.form-config { margin-top: 4px; }
+
+.config-acoes {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  margin-top: 16px;
+  padding-bottom: 32px;
+}
+
+.btn-voltar {
+  --border-radius: 12px;
+  --color: var(--liftly-label);
+  --border-color: var(--liftly-border);
+  height: 50px;
+  font-weight: 600;
+}
+
+.btn-confirmar {
+  --background: var(--liftly-contrast-bg);
+  --color: var(--liftly-contrast-color);
+  --border-radius: 12px;
+  height: 50px;
+  font-weight: 700;
+}

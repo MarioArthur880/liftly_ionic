@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/esqueceu-senha" text=""></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="auth-container">
+
+    <h1 class="auth-titulo">Enter OTP</h1>
+    <p class="auth-subtitulo">Digite o código de verificação que enviamos para o seu e-mail ou telefone.</p>
+
+    <div class="otp-row">
+      @for (digito of digitos; track $index) {
+        <ion-input
+          [id]="'otp-' + $index"
+          class="otp-box"
+          type="number"
+          maxlength="1"
+          [(ngModel)]="digitos[$index]"
+          (ionInput)="onInput($event, $index)"
+          (keydown)="onKeydown($event, $index)">
+        </ion-input>
+      }
+    </div>
+
+    <ion-button expand="block" class="btn-primario" (click)="trocarSenha()">
+      Trocar senha
+    </ion-button>
+
+    <p class="reenvio ion-text-center">
+      Não recebeu o OTP?
+      <span class="link-acao" (click)="reenviar()">Reenviar OTP</span>
+    </p>
+
+  </div>
+
+</ion-content>

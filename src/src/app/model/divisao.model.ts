@@ -1,0 +1,37 @@
+export class ExercicioModel {
+  id: string;
+  nome: string;
+  grupoMuscular: string;
+  series: number;
+  repeticoes: number;
+  carga: number;
+  observacao: string;
+
+  constructor() {
+    this.id = '';
+    this.nome = '';
+    this.grupoMuscular = '';
+    this.series = 3;
+    this.repeticoes = 10;
+    this.carga = 0;
+    this.observacao = '';
+  }
+}
+
+export class DivisaoModel {
+  id: string;
+  usuarioId: string;
+  nome: string;
+  descricao: string;
+  exercicios: ExercicioModel[];
+  dataCriacao: string;
+
+  constructor() {
+    this.id = '';
+    this.usuarioId = '';
+    this.nome = '';
+    this.descricao = '';
+    this.exercicios = [];
+    this.dataCriacao = new Date().toISOString();
+  }
+}

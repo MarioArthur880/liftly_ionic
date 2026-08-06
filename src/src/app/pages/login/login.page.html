@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="auth-container">
+
+    <h1 class="auth-titulo">Sign In</h1>
+    <p class="auth-subtitulo">Acesse sua conta e gerencie seus treinos.</p>
+
+    <ion-button expand="block" class="btn-google" fill="outline">
+      <ion-icon name="logo-google" slot="start"></ion-icon>
+      Google
+    </ion-button>
+
+    <div class="separador">ou</div>
+
+    <form [formGroup]="formGroup" (ngSubmit)="autenticar()">
+
+      <ion-input
+        class="liftly-input"
+        type="email"
+        formControlName="email"
+        label="E-mail"
+        label-placement="floating"
+        placeholder="seu@email.com">
+      </ion-input>
+
+      <ion-input
+        class="liftly-input"
+        [type]="senhaVisivel ? 'text' : 'password'"
+        formControlName="senha"
+        label="Senha"
+        label-placement="floating">
+        <ion-icon
+          [name]="senhaVisivel ? 'eye-outline' : 'eye-off-outline'"
+          slot="end"
+          class="icone-olho"
+          (click)="toggleSenha()">
+        </ion-icon>
+      </ion-input>
+
+      <div class="esqueceu-link ion-text-end">
+        <a routerLink="/esqueceu-senha" class="link-acao">Esqueceu a senha?</a>
+      </div>
+
+      <ion-button
+        type="submit"
+        expand="block"
+        class="btn-primario"
+        [disabled]="!formGroup.valid">
+        Entrar
+      </ion-button>
+
+    </form>
+
+    <p class="auth-rodape ion-text-center">
+      Não tem conta?
+      <a routerLink="/cadastro" class="link-acao">Sign Up</a>
+    </p>
+
+  </div>
+
+</ion-content>

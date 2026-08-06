@@ -1,0 +1,205 @@
+ion-content {
+  --background: var(--liftly-page-bg);
+}
+
+ion-toolbar {
+  --background: var(--liftly-surface);
+}
+
+.logo-texto {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--liftly-primary);
+  letter-spacing: -0.5px;
+}
+
+.saudacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.saudacao-sub {
+  font-size: 0.85rem;
+  color: var(--liftly-muted);
+  margin: 0 0 4px;
+}
+
+.saudacao-nome {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--liftly-text);
+  margin: 0;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--liftly-surface-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 1.4rem;
+    color: var(--liftly-primary);
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--liftly-surface);
+  border-radius: 16px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px var(--liftly-shadow);
+}
+
+.stat-icon {
+  font-size: 1.3rem;
+  color: var(--liftly-primary);
+}
+
+.stat-valor {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--liftly-text);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--liftly-muted);
+  font-weight: 500;
+}
+
+.secao-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.secao-titulo {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--liftly-text);
+  margin: 0;
+}
+
+.ver-todos {
+  font-size: 0.85rem;
+  color: var(--liftly-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.instrucao-escolha {
+  font-size: 0.82rem;
+  color: var(--liftly-subtext);
+  margin: 0 0 12px;
+}
+
+.card-treino {
+  background: var(--liftly-surface);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px var(--liftly-shadow);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 4px var(--liftly-shadow);
+  }
+}
+
+.card-treino-esq {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.card-treino-icone {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--liftly-surface-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 1.3rem;
+    color: var(--liftly-primary);
+  }
+}
+
+.card-treino-nome {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--liftly-text);
+  margin: 0 0 2px;
+}
+
+.card-treino-info {
+  font-size: 0.8rem;
+  color: var(--liftly-primary);
+  margin: 0;
+  font-weight: 500;
+}
+
+.card-treino-desc {
+  font-size: 0.75rem;
+  color: var(--liftly-placeholder);
+  margin: 2px 0 0;
+}
+
+.card-treino-play {
+  ion-icon {
+    font-size: 2rem;
+    color: var(--liftly-primary);
+  }
+}
+
+.vazio-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.vazio-icon {
+  font-size: 3rem;
+  color: var(--liftly-border);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.vazio-texto {
+  color: var(--liftly-placeholder);
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}
+
+.btn-nova-divisao {
+  --background: var(--liftly-contrast-bg);
+  --color: var(--liftly-contrast-color);
+  --border-radius: 12px;
+  font-weight: 600;
+}

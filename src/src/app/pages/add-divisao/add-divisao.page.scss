@@ -1,0 +1,261 @@
+ion-content {
+  --background: #f7f8fa;
+}
+
+ion-toolbar {
+  --background: #ffffff;
+  ion-title { font-weight: 700; font-size: 1rem; }
+}
+
+.btn-salvar { --color: #00B4D8; font-size: 1.3rem; }
+
+// ── Seções ────────────────────────────────────────────
+.secao {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.secao-titulo {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-count {
+  background: #00B4D8;
+  color: #fff;
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+// ── Inputs ────────────────────────────────────────────
+ion-input.liftly-input, ion-textarea.liftly-input {
+  --background: #f5f5f5;
+  --border-radius: 12px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --color: #111;
+  --placeholder-color: #aaa;
+  --highlight-color-focused: #00B4D8;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  min-height: 58px;
+}
+
+.row-tres {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+// ── Lista exercícios adicionados ──────────────────────
+.lista-exercicios { background: transparent; padding: 0; }
+
+.item-exercicio {
+  --background: #f9f9f9;
+  --border-radius: 12px;
+  --padding-start: 10px;
+  --inner-padding-end: 6px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+}
+
+.ex-grupo-tag {
+  background: #f0f9fc;
+  color: #00B4D8;
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 4px 6px;
+  letter-spacing: 0.5px;
+  min-width: 34px;
+  text-align: center;
+}
+
+.ex-nome { font-size: 0.9rem; font-weight: 700; color: #111; margin-bottom: 2px; }
+.ex-detalhe { font-size: 0.8rem; color: #00B4D8; margin: 0; font-weight: 500; }
+.ex-obs { font-size: 0.75rem; color: #aaa; margin: 2px 0 0; font-style: italic; }
+
+.exercicios-vazio {
+  text-align: center;
+  padding: 20px 12px 8px;
+  .vazio-icon { font-size: 2rem; color: #ddd; display: block; margin-bottom: 8px; }
+  p { color: #aaa; font-size: 0.85rem; margin: 0; line-height: 1.5; }
+}
+
+.btn-add-exercicio {
+  --background: #f0f9fc;
+  --color: #00B4D8;
+  --border-radius: 12px;
+  font-weight: 700;
+  margin-top: 12px;
+  height: 48px;
+}
+
+.btn-salvar-final {
+  --background: #000000;
+  --border-radius: 14px;
+  --color: #ffffff;
+  font-weight: 700;
+  height: 52px;
+  margin-bottom: 32px;
+}
+
+// ── Modal ─────────────────────────────────────────────
+.modal-titulo { font-weight: 700; font-size: 0.95rem; }
+
+.modal-content { --background: #f7f8fa; }
+
+.searchbar-catalogo {
+  --background: #ffffff;
+  --border-radius: 12px;
+  --box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --placeholder-color: #aaa;
+  --color: #111;
+  padding: 0 0 8px;
+}
+
+.chips-grupos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 4px 0 12px;
+
+  ion-chip {
+    --background: #ffffff;
+    --color: #555;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 1.5px solid #e8e8e8;
+    margin: 0;
+    height: 30px;
+
+    &.chip-ativo {
+      --background: #00B4D8;
+      --color: #ffffff;
+      border-color: #00B4D8;
+    }
+  }
+}
+
+.resultado-count {
+  font-size: 0.78rem;
+  color: #aaa;
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+
+.lista-catalogo { background: transparent; padding: 0; }
+
+.item-catalogo {
+  --background: #ffffff;
+  --border-radius: 12px;
+  --padding-start: 10px;
+  --inner-padding-end: 10px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  cursor: pointer;
+}
+
+.catalogo-grupo-tag {
+  background: #f0f9fc;
+  color: #00B4D8;
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 4px 6px;
+  letter-spacing: 0.5px;
+  min-width: 34px;
+  text-align: center;
+}
+
+.catalogo-nome { font-size: 0.9rem; font-weight: 700; color: #111; }
+.catalogo-info { font-size: 0.78rem; color: #888; margin: 0; }
+
+.catalogo-add-icon { font-size: 1.4rem; color: #00B4D8; }
+
+.sem-resultado {
+  text-align: center;
+  padding: 32px;
+  p { color: #aaa; font-size: 0.85rem; }
+}
+
+// ── Tela de configuração ──────────────────────────────
+.ex-selecionado-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.ex-selecionado-tag {
+  display: inline-block;
+  background: #f0f9fc;
+  color: #00B4D8;
+  font-size: 0.72rem;
+  font-weight: 800;
+  border-radius: 8px;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.ex-selecionado-nome {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 6px;
+}
+
+.ex-selecionado-desc {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 0 4px;
+}
+
+.ex-selecionado-equip {
+  font-size: 0.82rem;
+  color: #aaa;
+  margin: 0;
+}
+
+.form-config { margin-top: 4px; }
+
+.config-acoes {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  margin-top: 16px;
+  padding-bottom: 32px;
+}
+
+.btn-voltar {
+  --border-radius: 12px;
+  --color: #555;
+  --border-color: #ddd;
+  height: 50px;
+  font-weight: 600;
+}
+
+.btn-confirmar {
+  --background: #000000;
+  --color: #ffffff;
+  --border-radius: 12px;
+  height: 50px;
+  font-weight: 700;
+}

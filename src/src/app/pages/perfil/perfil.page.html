@@ -1,0 +1,94 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Meu Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Avatar e nome -->
+  <div class="avatar-container">
+    <div class="avatar-circulo">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </div>
+    <h2 class="usuario-nome">{{ usuario.nome || 'Atleta' }}</h2>
+    <p class="usuario-email">{{ usuario.email }}</p>
+  </div>
+
+  <!-- Dados pessoais -->
+  <div class="secao-form">
+    <h3 class="secao-titulo">Dados Pessoais</h3>
+
+    <form [formGroup]="formGroup">
+
+      <ion-item class="liftly-input">
+        <ion-label position="floating">Nome</ion-label>
+        <ion-input type="text" formControlName="nome"></ion-input>
+      </ion-item>
+
+      <ion-item class="liftly-input input-desabilitado">
+        <ion-label position="floating">E-mail</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-item class="liftly-input">
+        <ion-label position="floating">Data de Nascimento</ion-label>
+        <ion-input type="date" formControlName="dataNascimento"></ion-input>
+      </ion-item>
+
+    </form>
+  </div>
+
+  <!-- Dados físicos -->
+  <div class="secao-form">
+    <h3 class="secao-titulo">Dados Físicos</h3>
+
+    <form [formGroup]="formGroup">
+
+      <div class="input-linha-dupla">
+        <ion-item class="liftly-input item-metade">
+          <ion-label position="floating">Peso (kg)</ion-label>
+          <ion-input type="number" formControlName="peso" min="30" max="300"></ion-input>
+        </ion-item>
+
+        <ion-item class="liftly-input item-metade">
+          <ion-label position="floating">Altura (cm)</ion-label>
+          <ion-input type="number" formControlName="altura" min="100" max="250"></ion-input>
+        </ion-item>
+      </div>
+
+      <ion-item class="liftly-input">
+        <ion-label position="floating">Objetivo</ion-label>
+        <ion-select formControlName="objetivo" interface="action-sheet" cancelText="Cancelar">
+          <ion-select-option value="hipertrofia">Hipertrofia</ion-select-option>
+          <ion-select-option value="emagrecimento">Emagrecimento</ion-select-option>
+          <ion-select-option value="forca">Força</ion-select-option>
+          <ion-select-option value="resistencia">Resistência</ion-select-option>
+          <ion-select-option value="saude">Saúde Geral</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button expand="block" class="btn-salvar" (click)="salvar()" [disabled]="!formGroup.valid">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Salvar alterações
+      </ion-button>
+
+    </form>
+  </div>
+
+  <!-- Ações da conta -->
+  <div class="secao-form secao-conta">
+    <h3 class="secao-titulo">Conta</h3>
+
+    <ion-button expand="block" class="btn-sair" fill="outline" (click)="sair()">
+      <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      Sair da conta
+    </ion-button>
+
+    <ion-button expand="block" class="btn-desativar" fill="outline" (click)="confirmarDesativar()">
+      <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+      Desativar conta
+    </ion-button>
+  </div>
+
+</ion-content>

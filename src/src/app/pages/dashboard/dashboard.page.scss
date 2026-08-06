@@ -1,0 +1,205 @@
+ion-content {
+  --background: #f7f8fa;
+}
+
+ion-toolbar {
+  --background: #ffffff;
+}
+
+.logo-texto {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #00B4D8;
+  letter-spacing: -0.5px;
+}
+
+.saudacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.saudacao-sub {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 4px;
+}
+
+.saudacao-nome {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f0f9fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 1.4rem;
+    color: #00B4D8;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.stat-icon {
+  font-size: 1.3rem;
+  color: #00B4D8;
+}
+
+.stat-valor {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #111;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: #888;
+  font-weight: 500;
+}
+
+.secao-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.secao-titulo {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+}
+
+.ver-todos {
+  font-size: 0.85rem;
+  color: #00B4D8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.instrucao-escolha {
+  font-size: 0.82rem;
+  color: #999;
+  margin: 0 0 12px;
+}
+
+.card-treino {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+}
+
+.card-treino-esq {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.card-treino-icone {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #f0f9fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  ion-icon {
+    font-size: 1.3rem;
+    color: #00B4D8;
+  }
+}
+
+.card-treino-nome {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 2px;
+}
+
+.card-treino-info {
+  font-size: 0.8rem;
+  color: #00B4D8;
+  margin: 0;
+  font-weight: 500;
+}
+
+.card-treino-desc {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin: 2px 0 0;
+}
+
+.card-treino-play {
+  ion-icon {
+    font-size: 2rem;
+    color: #00B4D8;
+  }
+}
+
+.vazio-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.vazio-icon {
+  font-size: 3rem;
+  color: #ddd;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.vazio-texto {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}
+
+.btn-nova-divisao {
+  --background: #000;
+  --color: #fff;
+  --border-radius: 12px;
+  font-weight: 600;
+}
