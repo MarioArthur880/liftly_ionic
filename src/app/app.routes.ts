@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -33,6 +34,7 @@ export const routes: Routes = [
   {
     path: 'tabs',
     loadComponent: () => import('./pages/tabs/tabs.page').then(m => m.TabsPage),
+    canActivate: [authGuard],
     children: [
       {
         path: 'dashboard',
@@ -63,18 +65,22 @@ export const routes: Routes = [
   },
   {
     path: 'add-divisao',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/add-divisao/add-divisao.page').then(m => m.AddDivisaoPage)
   },
   {
     path: 'add-divisao/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/add-divisao/add-divisao.page').then(m => m.AddDivisaoPage)
   },
   {
     path: 'executar-treino/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/executar-treino/executar-treino.page').then(m => m.ExecutarTreinoPage)
   },
   {
     path: 'grupo/:id',
+    canActivate: [authGuard],
     loadComponent: () => import('./pages/grupo-detalhe/grupo-detalhe.page').then(m => m.GrupoDetalhePage)
   }
 ];

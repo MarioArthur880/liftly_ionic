@@ -76,6 +76,7 @@ export class AddDivisaoPage implements OnInit {
       series: [3, Validators.compose([Validators.required, Validators.min(1)])],
       repeticoes: [10, Validators.compose([Validators.required, Validators.min(1)])],
       carga: [0, Validators.min(0)],
+      descansoSegundos: [60, [Validators.min(0), Validators.max(3600)]],
       observacao: ['']
     });
   }
@@ -101,7 +102,7 @@ export class AddDivisaoPage implements OnInit {
     this.termoBusca = '';
     this.grupoFiltro = '';
     this.exercicioSelecionado = null;
-    this.formConfig.reset({ series: 3, repeticoes: 10, carga: 0, observacao: '' });
+    this.formConfig.reset({ series: 3, repeticoes: 10, carga: 0, descansoSegundos: 60, observacao: '' });
     this.catalogoService.listarTodos().subscribe(exercicios => this.resultadosBusca = exercicios);
     this.modalAberto = true;
   }
@@ -136,7 +137,11 @@ export class AddDivisaoPage implements OnInit {
   confirmarExercicio() {
     if (!this.exercicioSelecionado || !this.formConfig.valid) return;
 
-    const jaAdicionado = this.divisao.exercicios.some(e => (e.catalogoId || e.id) === this.exercicioSelecionado!.id);
+    const nomeSelecionado = this.exercicioSelecionado.nome.trim().toLocaleLowerCase('pt-BR');
+    const jaAdicionado = this.divisao.exercicios.some(e =>
+      (e.catalogoId || e.id) === this.exercicioSelecionado!.id ||
+      e.nome.trim().toLocaleLowerCase('pt-BR') === nomeSelecionado
+    );
     if (jaAdicionado) {
       this.exibirMensagem('Este exercício já está na divisão.');
       return;
@@ -150,6 +155,7 @@ export class AddDivisaoPage implements OnInit {
     ex.series = this.formConfig.value.series;
     ex.repeticoes = this.formConfig.value.repeticoes;
     ex.carga = this.formConfig.value.carga;
+    ex.descansoSegundos = this.formConfig.value.descansoSegundos;
     ex.observacao = this.formConfig.value.observacao;
 
     this.divisao.exercicios.push(ex);
@@ -168,7 +174,7 @@ export class AddDivisaoPage implements OnInit {
           text: 'Remover',
           role: 'destructive',
           handler: () => {
-            this.divisao.exercicios = this.divisao.exercicios.filter(e => e.id !== ex.id);
+            this.divisao.exercicios = this.divisao.exercicios.filter(e => e !== ex);
           }
         }
       ]

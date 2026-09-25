@@ -21,3 +21,8 @@ export class UsuarioModel {
     this.ativo = true;
   }
 }
+
+export interface AuthResponseModel {
+  usuario: UsuarioModel;
+  token: string;
+}

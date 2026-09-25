@@ -13,96 +13,153 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-
   @if (!divisao) {
-    <div class="vazio-container">
-      <p>Treino não encontrado.</p>
-    </div>
+    <div class="vazio-container"><p>Treino não encontrado.</p></div>
   } @else {
-
-    <!-- Progresso geral -->
     <div class="progresso-container">
       <div class="progresso-texto">
         <span class="progresso-label">Séries concluídas</span>
         <span class="progresso-valor">{{ totalSeriesFeitas }} / {{ totalSeriesPlanejasdas }}</span>
       </div>
-      <div class="progresso-barra">
-        <div class="progresso-fill" [style.width.%]="percentualFeitos"></div>
-      </div>
+      <div class="progresso-barra"><div class="progresso-fill" [style.width.%]="percentualFeitos"></div></div>
     </div>
 
-    <!-- Lista de exercícios -->
+    <ion-button expand="block" fill="outline" class="btn-avulso" (click)="abrirModalAvulso()">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      Adicionar exercício avulso
+    </ion-button>
+
     <div class="exercicios-lista">
       @for (item of exercicios; track item.exercicioId) {
-
-        <div class="card-exercicio" [class.completo]="todasSeriesFeitas(item)">
-
-          <!-- Cabeçalho do exercício -->
+        <div class="card-exercicio" [class.completo]="todasSeriesFeitas(item)" [class.card-avulso]="item.avulso">
           <div class="exercicio-header">
             <div class="exercicio-info">
-              <h3 class="exercicio-nome">{{ item.nome }}</h3>
+              <div class="nome-linha">
+                <h3 class="exercicio-nome">{{ item.nome }}</h3>
+                @if (item.avulso) {
+                  <span class="badge-avulso">Avulso</span>
+                }
+              </div>
               <div class="exercicio-tags">
                 <span class="tag">{{ item.series }} séries</span>
                 <span class="tag">{{ item.repeticoes }} rep</span>
                 @if (item.carga > 0) {
                   <span class="tag">{{ item.carga }} kg</span>
                 }
+                @if (item.descansoSegundos > 0) {
+                  <span class="tag">{{ item.descansoSegundos }}s descanso</span>
+                }
               </div>
             </div>
-            <!-- Botão marcar todas -->
-            <button
-              class="btn-marcar-todas"
-              [class.todas-marcadas]="todasSeriesFeitas(item)"
-              (click)="toggleTodas(item)">
-              @if (todasSeriesFeitas(item)) {
-                ✓ Todas
-              } @else {
-                Marcar todas
-              }
+            <button class="btn-marcar-todas" [class.todas-marcadas]="todasSeriesFeitas(item)" (click)="toggleTodas(item)">
+              {{ todasSeriesFeitas(item) ? '✓ Todas' : 'Marcar todas' }}
             </button>
           </div>
 
-          <!-- Progresso do exercício -->
-          <p class="ex-progresso">
-            {{ totalSeriesFeitasEx(item) }} de {{ item.series }} série(s) concluída(s)
-          </p>
+          @if (item.avulso) {
+            <div class="acoes-avulso">
+              <button type="button" (click)="editarAvulso(item)"><ion-icon name="create-outline"></ion-icon> Editar</button>
+              <button type="button" class="remover" (click)="removerAvulso(item)"><ion-icon name="trash-outline"></ion-icon> Remover</button>
+            </div>
+          }
 
-          <!-- Chips individuais por série -->
+          @if (item.observacao) {
+            <p class="ex-observacao">{{ item.observacao }}</p>
+          }
+          <p class="ex-progresso">{{ totalSeriesFeitasEx(item) }} de {{ item.series }} série(s) concluída(s)</p>
+
           <div class="series-chips">
             @for (feita of item.seriesFeitas; track $index) {
-              <button
-                class="chip-serie"
-                [class.chip-feita]="feita"
-                [class.chip-pendente]="!feita"
+              <button class="chip-serie" [class.chip-feita]="feita" [class.chip-pendente]="!feita"
                 [class.chip-bloqueada]="serieBloqueada(item, $index)"
-                [attr.aria-disabled]="serieBloqueada(item, $index)"
-                (click)="toggleSerie(item, $index)">
+                [attr.aria-disabled]="serieBloqueada(item, $index)" (click)="toggleSerie(item, $index)">
                 <span class="chip-numero">{{ $index + 1 }}</span>
                 <span class="chip-label">{{ feita ? '✓' : '○' }}</span>
               </button>
             }
           </div>
-
         </div>
       }
     </div>
-
   }
-
 </ion-content>
 
-<!-- Botão fixo no rodapé -->
 @if (divisao) {
   <ion-footer class="footer-acao">
     <ion-toolbar>
-      <ion-button
-        expand="block"
-        class="btn-finalizar"
-        [disabled]="totalSeriesFeitas === 0"
-        (click)="finalizar()">
+      <ion-button expand="block" class="btn-finalizar" [disabled]="totalSeriesFeitas === 0" (click)="finalizar()">
         <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
         Finalizar ({{ totalSeriesFeitas }}/{{ totalSeriesPlanejasdas }} séries)
       </ion-button>
     </ion-toolbar>
   </ion-footer>
 }
+
+<ion-modal [isOpen]="modalAvulsoAberto" (didDismiss)="fecharModalAvulso()" [breakpoints]="[0, 0.92]" [initialBreakpoint]="0.92">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title class="modal-titulo">
+          @if (exercicioAvulsoEditando) { Editar exercício avulso }
+          @else if (exercicioSelecionado) { Configurar exercício }
+          @else { Adicionar exercício avulso }
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="fecharModalAvulso()" fill="clear"><ion-icon name="close-outline" slot="icon-only"></ion-icon></ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="modal-content ion-padding">
+      @if (!exercicioSelecionado) {
+        <p class="avulso-explicacao">O exercício será salvo somente no histórico desta sessão e não alterará a ficha original.</p>
+        <ion-searchbar [(ngModel)]="termoBusca" (ionInput)="onBuscaAvulso()" placeholder="Buscar exercício..." debounce="150"></ion-searchbar>
+        <div class="chips-grupos">
+          @for (grupo of grupos; track grupo) {
+            <ion-chip [class.chip-ativo]="grupoFiltro === grupo" (click)="filtrarGrupoAvulso(grupo)">{{ grupo }}</ion-chip>
+          }
+        </div>
+        <ion-list class="lista-catalogo">
+          @for (ex of resultadosBusca; track ex.id) {
+            <ion-item button detail="false" class="item-catalogo" (click)="selecionarExercicioAvulso(ex)">
+              <div class="catalogo-grupo-tag" slot="start">{{ ex.grupoMuscular.substring(0, 3).toUpperCase() }}</div>
+              <ion-label><h3>{{ ex.nome }}</h3><p>{{ ex.grupoMuscular }} · {{ ex.equipamento }}</p></ion-label>
+              <ion-icon name="add-circle-outline" slot="end"></ion-icon>
+            </ion-item>
+          }
+          @if (resultadosBusca.length === 0) {
+            <div class="sem-resultado">Nenhum exercício encontrado.</div>
+          }
+        </ion-list>
+      } @else {
+        <div class="ex-selecionado-card">
+          <span>{{ exercicioSelecionado.grupoMuscular }}</span>
+          <h2>{{ exercicioSelecionado.nome }}</h2>
+          @if (exercicioSelecionado.descricao) {
+            <p>{{ exercicioSelecionado.descricao }}</p>
+          }
+        </div>
+
+        <form [formGroup]="formAvulso" class="form-config">
+          <div class="config-grid">
+            <ion-input class="liftly-input" type="number" formControlName="series" label="Séries" label-placement="floating" min="1"></ion-input>
+            <ion-input class="liftly-input" type="number" formControlName="repeticoes" label="Reps" label-placement="floating" min="1"></ion-input>
+            <ion-input class="liftly-input" type="number" formControlName="carga" label="Carga (kg)" label-placement="floating" min="0"></ion-input>
+            <ion-input class="liftly-input" type="number" formControlName="descansoSegundos" label="Descanso (s)" label-placement="floating" min="0"></ion-input>
+          </div>
+          <ion-textarea class="liftly-input" formControlName="observacao" label="Observação" label-placement="floating" [rows]="2" maxlength="300"></ion-textarea>
+        </form>
+
+        <div class="config-acoes">
+          @if (!exercicioAvulsoEditando) {
+            <ion-button fill="outline" (click)="voltarParaBuscaAvulso()">Voltar</ion-button>
+          }
+          <ion-button (click)="confirmarAvulso()" [disabled]="formAvulso.invalid">
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+            {{ exercicioAvulsoEditando ? 'Salvar alterações' : 'Adicionar à sessão' }}
+          </ion-button>
+        </div>
+      }
+    </ion-content>
+  </ng-template>
+</ion-modal>

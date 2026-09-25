@@ -73,10 +73,16 @@
                 <div class="ex-cabecalho">
                   <div class="ex-status-dot" [class.dot-verde]="exCompleto(ex)" [class.dot-amarelo]="!exCompleto(ex) && seriesFeitasEx(ex) > 0" [class.dot-cinza]="seriesFeitasEx(ex) === 0"></div>
                   <div class="ex-info">
-                    <span class="ex-nome">{{ ex.nome }}</span>
+                    <span class="ex-nome">
+                      {{ ex.nome }}
+                      @if (ex.avulso) {
+                        <span class="badge-avulso-hist">Avulso</span>
+                      }
+                    </span>
                     <span class="ex-contagem">
                       {{ seriesFeitasEx(ex) }}/{{ ex.series }} séries · {{ ex.repeticoes }} rep
                       @if (ex.carga > 0) { · {{ ex.carga }} kg }
+                      @if (ex.descansoSegundos > 0) { · {{ ex.descansoSegundos }}s descanso }
                     </span>
                   </div>
                 </div>

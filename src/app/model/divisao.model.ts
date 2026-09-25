@@ -6,6 +6,7 @@ export class ExercicioModel {
   series: number;
   repeticoes: number;
   carga: number;
+  descansoSegundos: number;
   observacao: string;
 
   constructor() {
@@ -16,6 +17,7 @@ export class ExercicioModel {
     this.series = 3;
     this.repeticoes = 10;
     this.carga = 0;
+    this.descansoSegundos = 0;
     this.observacao = '';
   }
 }

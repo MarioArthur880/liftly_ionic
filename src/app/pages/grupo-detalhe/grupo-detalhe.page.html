@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>{{ grupo.nome || 'Grupo' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="convidarPorEmail()">
+      <ion-button (click)="convidarPorEmail()" [disabled]="carregando">
         <ion-icon name="person-add-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -44,6 +44,60 @@
         </ion-item>
       }
     </ion-list>
+
+    <section class="chat-card">
+      <div class="chat-titulo">
+        <div>
+          <h3 class="secao-titulo">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+            Chat do grupo
+          </h3>
+          <p class="secao-sub">Mensagens recentes dos membros deste grupo.</p>
+        </div>
+      </div>
+
+      <div class="chat-mensagens">
+        @if (carregandoMensagens) {
+          <div class="chat-estado">Carregando mensagens...</div>
+        } @else if (erroChat) {
+          <div class="chat-estado chat-erro">
+            Não foi possível atualizar o chat.
+            <button type="button" (click)="carregarMensagens(true)">Tentar novamente</button>
+          </div>
+        } @else if (mensagens.length === 0) {
+          <div class="chat-estado">Ainda não há mensagens. Seja o primeiro a escrever.</div>
+        } @else {
+          @for (mensagem of mensagens; track mensagem.id) {
+            <div class="mensagem-linha" [class.minha-linha]="minhaMensagem(mensagem)">
+              <div class="mensagem-balao" [class.minha-mensagem]="minhaMensagem(mensagem)">
+                @if (!minhaMensagem(mensagem)) {
+                  <span class="mensagem-autor">{{ mensagem.autorNome }}</span>
+                }
+                <p>{{ mensagem.texto }}</p>
+                <span class="mensagem-hora">{{ formatarHora(mensagem.dataEnvio) }}</span>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <div class="chat-envio">
+        <ion-textarea
+          [(ngModel)]="novaMensagem"
+          [autoGrow]="true"
+          [maxlength]="1000"
+          [rows]="1"
+          placeholder="Escreva uma mensagem..."
+          aria-label="Nova mensagem">
+        </ion-textarea>
+        <ion-button
+          class="btn-enviar"
+          (click)="enviarMensagem()"
+          [disabled]="!novaMensagem.trim() || enviandoMensagem">
+          <ion-icon name="send-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+    </section>
   }
 
 </ion-content>

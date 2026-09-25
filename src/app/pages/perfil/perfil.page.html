@@ -93,6 +93,58 @@
     </form>
   </div>
 
+  <!-- Evolução de peso -->
+  <div class="secao-form">
+    <div class="peso-titulo-linha">
+      <h3 class="secao-titulo">Evolução do peso</h3>
+      @if (historicoPeso.length > 0) {
+        <span class="peso-total">{{ historicoPeso.length }} registro(s)</span>
+      }
+    </div>
+
+    @if (carregandoPesos) {
+      <div class="grafico-estado">Carregando histórico...</div>
+    } @else if (erroPesos) {
+      <div class="grafico-estado grafico-erro">
+        Não foi possível carregar o histórico de peso.
+        <button type="button" (click)="carregarHistoricoPeso()">Tentar novamente</button>
+      </div>
+    } @else if (historicoPeso.length === 0) {
+      <div class="grafico-estado">
+        Salve seu peso no perfil para começar a acompanhar a evolução.
+      </div>
+    } @else {
+      <div class="peso-resumo">
+        <span>Mín. <strong>{{ pesoMinGrafico | number:'1.1-1' }} kg</strong></span>
+        <span>Atual <strong>{{ historicoPeso[historicoPeso.length - 1].peso | number:'1.1-1' }} kg</strong></span>
+        <span>Máx. <strong>{{ pesoMaxGrafico | number:'1.1-1' }} kg</strong></span>
+      </div>
+
+      <div class="grafico-wrap">
+        <svg [attr.viewBox]="'0 0 ' + graficoLargura + ' ' + graficoAltura" role="img" aria-label="Gráfico da evolução de peso">
+          <line [attr.x1]="graficoPadding" [attr.y1]="graficoAltura - graficoPadding"
+                [attr.x2]="graficoLargura - graficoPadding" [attr.y2]="graficoAltura - graficoPadding"
+                class="grafico-eixo"></line>
+          <line [attr.x1]="graficoPadding" [attr.y1]="graficoPadding"
+                [attr.x2]="graficoPadding" [attr.y2]="graficoAltura - graficoPadding"
+                class="grafico-eixo"></line>
+          @if (pontosGrafico.length > 1) {
+            <polyline [attr.points]="linhaGrafico" class="grafico-linha"></polyline>
+          }
+          @for (ponto of pontosGrafico; track $index) {
+            <circle [attr.cx]="ponto.x" [attr.cy]="ponto.y" r="4.5" class="grafico-ponto">
+              <title>{{ formatarDataPeso(ponto.data) }} — {{ ponto.peso | number:'1.1-1' }} kg</title>
+            </circle>
+          }
+        </svg>
+      </div>
+      <div class="grafico-datas">
+        <span>{{ formatarDataPeso(historicoPeso[0].dataRegistro) }}</span>
+        <span>{{ formatarDataPeso(historicoPeso[historicoPeso.length - 1].dataRegistro) }}</span>
+      </div>
+    }
+  </div>
+
   <!-- Alteração de senha -->
   <div class="secao-form">
     <h3 class="secao-titulo">Trocar senha</h3>

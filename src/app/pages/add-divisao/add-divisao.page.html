@@ -51,13 +51,14 @@
       </div>
     } @else {
       <ion-list class="lista-exercicios">
-        @for (ex of divisao.exercicios; track ex.id) {
+        @for (ex of divisao.exercicios; track ex.catalogoId || ex.id) {
           <ion-item class="item-exercicio">
             <div class="ex-grupo-tag" slot="start">{{ ex.grupoMuscular.substring(0, 3).toUpperCase() }}</div>
             <ion-label>
               <h3 class="ex-nome">{{ ex.nome }}</h3>
               <p class="ex-detalhe">{{ ex.series }}x{{ ex.repeticoes }}
                 @if (ex.carga > 0) { · {{ ex.carga }}kg }
+                @if (ex.descansoSegundos > 0) { · {{ ex.descansoSegundos }}s descanso }
               </p>
               @if (ex.observacao) {
                 <p class="ex-obs">{{ ex.observacao }}</p>
@@ -184,6 +185,16 @@
               min="0">
             </ion-input>
           </div>
+
+          <ion-input
+            class="liftly-input"
+            type="number"
+            formControlName="descansoSegundos"
+            label="Descanso (segundos)"
+            label-placement="floating"
+            min="0"
+            max="3600">
+          </ion-input>
 
           <ion-input
             class="liftly-input"
