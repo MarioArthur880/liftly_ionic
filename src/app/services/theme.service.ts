@@ -1,26 +1,20 @@
 import { Injectable } from '@angular/core';
 
-export type TemaPreferencia = 'sistema' | 'claro' | 'escuro';
+export type TemaPreferencia = 'claro' | 'escuro';
 
 const TEMA_KEY = 'liftly_tema';
 const CLASSE_ESCURO = 'ion-palette-dark';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
   constructor() {
     this.aplicarTema(this.obterPreferencia());
-
-    this.mediaQuery.addEventListener('change', () => {
-      if (this.obterPreferencia() === 'sistema') {
-        this.aplicarTema('sistema');
-      }
-    });
   }
 
   obterPreferencia(): TemaPreferencia {
-    return (localStorage.getItem(TEMA_KEY) as TemaPreferencia) || 'sistema';
+    const preferencia = localStorage.getItem(TEMA_KEY);
+    // New users and the former system preference start in dark mode.
+    return preferencia === 'claro' ? 'claro' : 'escuro';
   }
 
   definirPreferencia(preferencia: TemaPreferencia): void {
@@ -29,7 +23,6 @@ export class ThemeService {
   }
 
   private aplicarTema(preferencia: TemaPreferencia): void {
-    const escuro = preferencia === 'escuro' || (preferencia === 'sistema' && this.mediaQuery.matches);
-    document.documentElement.classList.toggle(CLASSE_ESCURO, escuro);
+    document.documentElement.classList.toggle(CLASSE_ESCURO, preferencia === 'escuro');
   }
 }

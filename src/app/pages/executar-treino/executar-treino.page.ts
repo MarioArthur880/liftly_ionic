@@ -39,6 +39,9 @@ export class ExecutarTreinoPage implements OnInit, OnDestroy {
   divisao: DivisaoModel | null = null;
   exercicios: HistoricoExercicioModel[] = [];
   dataInicio = '';
+  salvando = false;
+  confirmando = false;
+  private historicoPendente: HistoricoModel | null = null;
 
   tempoSegundos = 0;
   tempoFormatado = '00:00';
@@ -310,7 +313,8 @@ export class ExecutarTreinoPage implements OnInit, OnDestroy {
   }
 
   async finalizar() {
-    if (!this.divisao) return;
+    if (!this.divisao || this.salvando || this.confirmando) return;
+    this.confirmando = true;
     const alert = await this.alertController.create({
       header: 'Finalizar treino',
       message: `Você completou ${this.totalSeriesFeitas} de ${this.totalSeriesPlanejasdas} série(s). Deseja finalizar?`,
@@ -320,9 +324,12 @@ export class ExecutarTreinoPage implements OnInit, OnDestroy {
       ]
     });
     await alert.present();
+    await alert.onDidDismiss();
+    this.confirmando = false;
   }
 
   private salvarHistorico() {
+    if (this.salvando) return;
     const usuario = this.authService.obterSessao();
     if (!usuario?.id) {
       this.exibirMensagem('Usuário não encontrado. Faça login novamente.');
@@ -333,20 +340,23 @@ export class ExecutarTreinoPage implements OnInit, OnDestroy {
       return;
     }
 
-    const historico = new HistoricoModel();
+    const historico = this.historicoPendente || new HistoricoModel();
     historico.usuarioId = usuario.id;
     historico.divisaoId = this.divisao!.id;
     historico.divisaoNome = this.divisao!.nome;
     historico.dataInicio = this.dataInicio;
-    historico.dataFim = new Date().toISOString();
+    historico.dataFim = historico.dataFim || new Date().toISOString();
     historico.exercicios = this.exercicios;
 
     this.pararCronometro();
+    this.historicoPendente = historico;
+    this.salvando = true;
     this.historicoService.salvar(historico).subscribe({
       next: () => this.navController.navigateRoot('/tabs/historico'),
       error: () => {
+        this.salvando = false;
         this.iniciarCronometro();
-        this.exibirMensagem('Erro ao salvar histórico.');
+        this.exibirMensagem('Erro ao salvar histórico. Tente novamente.');
       }
     });
   }

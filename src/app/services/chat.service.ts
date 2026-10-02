@@ -14,7 +14,7 @@ export class ChatService {
     return this.http.get<MensagemModel[]>(`${this.apiUrl}/${grupoId}/mensagens`);
   }
 
-  enviar(grupoId: string, texto: string): Observable<MensagemModel> {
-    return this.http.post<MensagemModel>(`${this.apiUrl}/${grupoId}/mensagens`, { texto });
+  enviar(grupoId: string, texto: string, imagem: string | null, chave: string): Observable<MensagemModel> {
+    return this.http.post<MensagemModel>(`${this.apiUrl}/${grupoId}/mensagens`, { texto, imagem }, { headers: { 'Idempotency-Key': chave } });
   }
 }

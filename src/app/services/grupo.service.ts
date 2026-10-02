@@ -1,3 +1,4 @@
+import { chaveEnvio } from './envio-key';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -19,7 +20,7 @@ export class GrupoService {
   }
 
   criar(grupo: NovoGrupoModel): Observable<GrupoModel> {
-    return this.http.post<GrupoModel>(this.apiUrl, grupo);
+    return this.http.post<GrupoModel>(this.apiUrl, grupo, { headers: { 'Idempotency-Key': chaveEnvio(grupo) } });
   }
 
   entrarPorCodigo(codigo: string, usuarioId: string): Observable<GrupoModel> {

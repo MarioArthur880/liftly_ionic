@@ -1,3 +1,4 @@
+import { chaveEnvio } from './envio-key';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -22,7 +23,7 @@ export class DivisaoService {
     if (divisao.id) {
       return this.http.put<DivisaoModel>(`${this.apiUrl}/${divisao.id}`, divisao);
     }
-    return this.http.post<DivisaoModel>(this.apiUrl, divisao);
+    return this.http.post<DivisaoModel>(this.apiUrl, divisao, { headers: { 'Idempotency-Key': chaveEnvio(divisao) } });
   }
 
   excluir(id: string): Observable<void> {

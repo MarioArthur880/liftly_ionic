@@ -34,6 +34,7 @@ export class AddDivisaoPage implements OnInit {
   divisao: DivisaoModel;
   formGroup: FormGroup;
   modoEdicao = false;
+  salvando = false;
 
   // Modal de seleção de exercício
   modalAberto = false;
@@ -183,6 +184,7 @@ export class AddDivisaoPage implements OnInit {
   }
 
   salvar() {
+    if (this.salvando) return;
     if (!this.formGroup.valid) {
       this.exibirMensagem('Informe o nome da divisão.');
       return;
@@ -192,12 +194,13 @@ export class AddDivisaoPage implements OnInit {
     this.divisao.descricao = this.formGroup.value.descricao;
     this.divisao.usuarioId = usuario.id;
 
+    this.salvando = true;
     this.divisaoService.salvar(this.divisao).subscribe({
       next: () => {
         this.exibirMensagem(this.modoEdicao ? 'Divisão atualizada!' : 'Divisão criada!');
         this.navController.navigateBack('/tabs/divisoes');
       },
-      error: () => this.exibirMensagem('Erro ao salvar divisão. Verifique se a API está rodando.')
+      error: () => { this.salvando = false; this.exibirMensagem('Erro ao salvar divisão. Verifique se a API está rodando.'); }
     });
   }
 

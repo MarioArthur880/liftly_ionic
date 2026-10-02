@@ -35,3 +35,9 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 @import '@ionic/angular/css/palettes/dark.class.css';
 /* @import "@ionic/angular/css/palettes/dark.system.css"; */
+
+/* Keep long labels and controls usable on narrow screens. */
+ion-button { text-transform: none; }
+ion-item ion-label { min-width: 0; }
+ion-textarea, ion-input { min-width: 0; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--liftly-primary); outline-offset: 3px; }

@@ -1,19 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
   IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton,
-  IonIcon, IonBackButton, IonList, IonItem, IonLabel, IonTextarea
+  IonIcon, IonBackButton, IonList, IonItem, IonLabel, IonTextarea, IonModal
 } from '@ionic/angular/standalone';
 import { AlertController, ToastController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { personAddOutline, keyOutline, flameOutline, trophyOutline, chatbubbleEllipsesOutline, sendOutline } from 'ionicons/icons';
+import { personAddOutline, keyOutline, flameOutline, trophyOutline, chatbubbleEllipsesOutline, sendOutline, imageOutline, closeOutline } from 'ionicons/icons';
 
 import { GrupoDetalheModel } from '../../model/grupo.model';
 import { MensagemModel } from '../../model/mensagem.model';
 import { AuthService } from '../../services/auth.service';
 import { GrupoService } from '../../services/grupo.service';
+import { novaChaveEnvio } from '../../services/envio-key';
 import { ChatService } from '../../services/chat.service';
 
 @Component({
@@ -22,7 +23,7 @@ import { ChatService } from '../../services/chat.service';
   styleUrls: ['./grupo-detalhe.page.scss'],
   standalone: true,
   imports: [
-    IonTextarea, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons,
+    IonModal, IonTextarea, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons,
     IonBackButton, IonTitle, IonContent, IonHeader, IonToolbar,
     CommonModule, FormsModule
   ]
@@ -35,6 +36,11 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
   carregando = true;
   mensagens: MensagemModel[] = [];
   novaMensagem = '';
+  foto: string | null = null;
+  preparandoFoto = false;
+  fotoAberta: string | null = null;
+  @ViewChild('listaChat') listaChat?: ElementRef<HTMLDivElement>;
+  private envioPendente: { texto: string; imagem: string | null; chave: string } | null = null;
   carregandoMensagens = true;
   atualizandoMensagens = false;
   enviandoMensagem = false;
@@ -53,7 +59,7 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
       'person-add-outline': personAddOutline, 'key-outline': keyOutline,
       'flame-outline': flameOutline, 'trophy-outline': trophyOutline,
       'chatbubble-ellipses-outline': chatbubbleEllipsesOutline,
-      'send-outline': sendOutline
+      'send-outline': sendOutline, 'image-outline': imageOutline, 'close-outline': closeOutline
     });
   }
 
@@ -96,7 +102,10 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
     if (exibirLoading) this.carregandoMensagens = true;
     this.chatService.listar(this.grupoId).subscribe({
       next: mensagens => {
-        this.mensagens = mensagens;
+        const lista = this.listaChat?.nativeElement;
+        const pertoDoFim = !lista || lista.scrollHeight - lista.scrollTop - lista.clientHeight < 80;
+        this.mesclarMensagens(mensagens);
+        if (pertoDoFim || exibirLoading) this.rolarChat();
         this.erroChat = false;
         this.carregandoMensagens = false;
         this.atualizandoMensagens = false;
@@ -111,16 +120,22 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
 
   enviarMensagem() {
     const texto = this.novaMensagem.trim();
-    if (!texto || this.enviandoMensagem) return;
+    if ((!texto && !this.foto) || this.enviandoMensagem || this.preparandoFoto) return;
     if (texto.length > 1000) {
       this.exibirMensagem('A mensagem deve ter no máximo 1000 caracteres.');
       return;
     }
 
     this.enviandoMensagem = true;
-    this.chatService.enviar(this.grupoId, texto).subscribe({
+    if (!this.envioPendente || this.envioPendente.texto !== texto || this.envioPendente.imagem !== this.foto) {
+      this.envioPendente = { texto, imagem: this.foto, chave: novaChaveEnvio() };
+    }
+    this.chatService.enviar(this.grupoId, texto, this.foto, this.envioPendente.chave).subscribe({
       next: mensagem => {
-        this.mensagens = [...this.mensagens, mensagem].slice(-100);
+        this.mesclarMensagens([mensagem]);
+        this.foto = null;
+        this.envioPendente = null;
+        this.rolarChat();
         this.novaMensagem = '';
         this.enviandoMensagem = false;
         this.erroChat = false;
@@ -130,6 +145,56 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
         this.exibirMensagem('Erro ao enviar mensagem.');
       }
     });
+  }
+
+  private mesclarMensagens(novas: MensagemModel[]) {
+    const unicas = new Map([...this.mensagens, ...novas].map(m => [m.id, m]));
+    this.mensagens = [...unicas.values()].sort((a, b) =>
+      new Date(a.dataEnvio).getTime() - new Date(b.dataEnvio).getTime() || a.id.localeCompare(b.id)
+    ).slice(-100);
+  }
+
+  private rolarChat() {
+    requestAnimationFrame(() => {
+      const lista = this.listaChat?.nativeElement;
+      if (lista) lista.scrollTop = lista.scrollHeight;
+    });
+  }
+
+  async selecionarFoto(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const arquivo = input.files?.[0];
+    input.value = '';
+    if (!arquivo || this.enviandoMensagem) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(arquivo.type) || arquivo.size > 10 * 1024 * 1024) {
+      this.exibirMensagem('Escolha uma foto JPEG, PNG ou WebP de até 10 MB.');
+      return;
+    }
+    this.preparandoFoto = true;
+    const url = URL.createObjectURL(arquivo);
+    try {
+      const imagem = new Image();
+      imagem.src = url;
+      await imagem.decode();
+      const proporcao = Math.min(1, 1280 / Math.max(imagem.width, imagem.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(imagem.width * proporcao));
+      canvas.height = Math.max(1, Math.round(imagem.height * proporcao));
+      const contexto = canvas.getContext('2d');
+      if (!contexto) throw new Error('Canvas indisponível');
+      contexto.fillStyle = '#fff';
+      contexto.fillRect(0, 0, canvas.width, canvas.height);
+      contexto.drawImage(imagem, 0, 0, canvas.width, canvas.height);
+      let foto = canvas.toDataURL('image/jpeg', 0.8);
+      if (foto.length > 666690) foto = canvas.toDataURL('image/jpeg', 0.55);
+      if (foto.length > 666690) throw new Error('Foto muito grande');
+      this.foto = foto;
+    } catch {
+      this.exibirMensagem('Não foi possível preparar essa foto. Escolha uma imagem menor.');
+    } finally {
+      URL.revokeObjectURL(url);
+      this.preparandoFoto = false;
+    }
   }
 
   minhaMensagem(mensagem: MensagemModel): boolean {
@@ -151,6 +216,7 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
   }
 
   private pararAtualizacaoChat() {
+    this.fotoAberta = null;
     if (this.intervaloChat) clearInterval(this.intervaloChat);
     this.intervaloChat = null;
   }

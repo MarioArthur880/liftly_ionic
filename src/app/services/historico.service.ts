@@ -1,3 +1,4 @@
+import { chaveEnvio } from './envio-key';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -11,7 +12,7 @@ export class HistoricoService {
   constructor(private http: HttpClient) {}
 
   salvar(historico: HistoricoModel): Observable<HistoricoModel> {
-    return this.http.post<HistoricoModel>(this.apiUrl, historico);
+    return this.http.post<HistoricoModel>(this.apiUrl, historico, { headers: { 'Idempotency-Key': chaveEnvio(historico) } });
   }
 
   listarPorUsuario(usuarioId: string): Observable<HistoricoModel[]> {

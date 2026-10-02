@@ -4,5 +4,6 @@ export interface MensagemModel {
   autorId: string;
   autorNome: string;
   texto: string;
+  imagem?: string | null;
   dataEnvio: string;
 }

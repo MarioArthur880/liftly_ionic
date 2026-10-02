@@ -35,6 +35,7 @@ export class ComunidadePage implements OnInit {
 
   grupos: GrupoModel[] = [];
   convites: ConviteModel[] = [];
+  criandoGrupo = false;
   usuario: UsuarioModel;
 
   constructor(
@@ -80,6 +81,7 @@ export class ComunidadePage implements OnInit {
         {
           text: 'Criar',
           handler: (dados) => {
+            if (this.criandoGrupo) return false;
             const nome = (dados.nome || '').trim();
             if (!nome) {
               this.exibirMensagem('Informe um nome para o grupo.');
@@ -88,12 +90,14 @@ export class ComunidadePage implements OnInit {
             const novoGrupo = new NovoGrupoModel();
             novoGrupo.nome = nome;
             novoGrupo.criadorId = this.usuario.id;
+            this.criandoGrupo = true;
             this.grupoService.criar(novoGrupo).subscribe({
               next: () => {
+                this.criandoGrupo = false;
                 this.exibirMensagem('Grupo criado com sucesso!');
                 this.carregar();
               },
-              error: () => this.exibirMensagem('Erro ao criar grupo.')
+              error: () => { this.criandoGrupo = false; this.exibirMensagem('Erro ao criar grupo.'); }
             });
             return true;
           }

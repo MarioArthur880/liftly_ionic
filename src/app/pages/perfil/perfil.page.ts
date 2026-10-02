@@ -42,7 +42,7 @@ export class PerfilPage implements OnInit {
   usuario: UsuarioModel;
   formGroup: FormGroup;
   senhaForm: FormGroup;
-  temaPreferencia: TemaPreferencia = 'sistema';
+  temaPreferencia: TemaPreferencia = 'escuro';
   historicoPeso: PesoRegistroModel[] = [];
   carregandoPesos = false;
   erroPesos = false;
@@ -229,7 +229,7 @@ export class PerfilPage implements OnInit {
   }
 
   alterarTema(valor: string | number | undefined) {
-    if (valor !== 'sistema' && valor !== 'claro' && valor !== 'escuro') return;
+    if (valor !== 'claro' && valor !== 'escuro') return;
     this.temaPreferencia = valor;
     this.themeService.definirPreferencia(valor);
   }

@@ -52,14 +52,14 @@
             <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
             Chat do grupo
           </h3>
-          <p class="secao-sub">Mensagens recentes dos membros deste grupo.</p>
+          <p class="secao-sub">Compartilhe suas conquistas, converse e envie fotos.</p>
         </div>
       </div>
 
-      <div class="chat-mensagens">
+      <div #listaChat class="chat-mensagens" role="log" aria-label="Mensagens do grupo" aria-live="polite">
         @if (carregandoMensagens) {
           <div class="chat-estado">Carregando mensagens...</div>
-        } @else if (erroChat) {
+        } @else if (erroChat && mensagens.length === 0) {
           <div class="chat-estado chat-erro">
             Não foi possível atualizar o chat.
             <button type="button" (click)="carregarMensagens(true)">Tentar novamente</button>
@@ -73,7 +73,12 @@
                 @if (!minhaMensagem(mensagem)) {
                   <span class="mensagem-autor">{{ mensagem.autorNome }}</span>
                 }
-                <p>{{ mensagem.texto }}</p>
+                @if (mensagem.imagem) {
+                  <button type="button" class="foto-mensagem" (click)="fotoAberta = mensagem.imagem" aria-label="Ampliar foto">
+                    <img [src]="mensagem.imagem" alt="Foto compartilhada no grupo" loading="lazy" />
+                  </button>
+                }
+                @if (mensagem.texto) { <p>{{ mensagem.texto }}</p> }
                 <span class="mensagem-hora">{{ formatarHora(mensagem.dataEnvio) }}</span>
               </div>
             </div>
@@ -81,19 +86,38 @@
         }
       </div>
 
+      @if (erroChat && mensagens.length > 0) {
+        <p class="aviso-chat" role="status">Sem atualização no momento. Tentando reconectar...</p>
+      }
+      @if (foto) {
+        <div class="foto-previa">
+          <img [src]="foto" alt="Foto selecionada para envio" />
+          <span>Foto pronta para enviar</span>
+          <ion-button fill="clear" (click)="foto = null" [disabled]="enviandoMensagem" aria-label="Remover foto">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+          </ion-button>
+        </div>
+      }
+      @if (preparandoFoto) { <p class="aviso-chat" role="status">Preparando foto...</p> }
       <div class="chat-envio">
+        <input #arquivoFoto hidden type="file" accept="image/jpeg,image/png,image/webp" (change)="selecionarFoto($event)" />
+        <ion-button fill="clear" class="btn-foto" (click)="arquivoFoto.click()" [disabled]="enviandoMensagem || preparandoFoto" aria-label="Adicionar foto">
+          <ion-icon name="image-outline" slot="icon-only"></ion-icon>
+        </ion-button>
         <ion-textarea
           [(ngModel)]="novaMensagem"
           [autoGrow]="true"
           [maxlength]="1000"
           [rows]="1"
           placeholder="Escreva uma mensagem..."
+          [disabled]="enviandoMensagem"
           aria-label="Nova mensagem">
         </ion-textarea>
         <ion-button
           class="btn-enviar"
           (click)="enviarMensagem()"
-          [disabled]="!novaMensagem.trim() || enviandoMensagem">
+          [disabled]="(!novaMensagem.trim() && !foto) || enviandoMensagem || preparandoFoto"
+          aria-label="Enviar mensagem">
           <ion-icon name="send-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </div>
@@ -101,3 +125,20 @@
   }
 
 </ion-content>
+<ion-modal class="modal-foto" [isOpen]="!!fotoAberta" (didDismiss)="fotoAberta = null">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Foto do grupo</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="fotoAberta = null" aria-label="Fechar foto">
+            <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div class="foto-ampliada"><img [src]="fotoAberta" alt="Foto compartilhada ampliada" /></div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -230,3 +230,31 @@ ion-list {
 }
 
 .chat-erro { color: #b23a3a; }
+
+/* Comfortable conversation area on phones and wider screens. */
+ion-content { --padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+.codigo-card, ion-list, .secao-titulo, .secao-sub, .chat-card { max-width: 860px; margin-left: auto; margin-right: auto; }
+.chat-card { padding: 0; overflow: hidden; border: 1px solid var(--liftly-border); }
+.chat-titulo { padding: 18px 18px 0; }
+.chat-mensagens { height: clamp(280px, 50dvh, 520px); max-height: 520px; padding: 16px; background: var(--liftly-page-bg); overscroll-behavior: contain; }
+.mensagem-balao { min-width: 76px; box-shadow: 0 1px 3px var(--liftly-shadow); }
+.chat-envio { padding: 12px; background: var(--liftly-surface); }
+.chat-envio ion-textarea { min-width: 0; flex: 1; margin: 0; overflow-y: auto; }
+.btn-foto { width: 40px; height: 46px; margin: 0; flex-shrink: 0; }
+.foto-mensagem { display: block; padding: 0; margin: 4px 0 8px; background: none; border: 0; cursor: zoom-in; max-width: 100%; }
+.foto-mensagem img { display: block; border-radius: 10px; max-height: 260px; width: auto; max-width: 100%; object-fit: contain; }
+.foto-previa { display: flex; align-items: center; gap: 12px; padding: 12px; color: var(--liftly-subtext); font-size: .8rem; }
+.foto-previa img { width: 60px; height: 60px; object-fit: cover; border-radius: 10px; }
+.foto-previa span { flex: 1; }
+.aviso-chat { padding: 8px 12px; margin: 0; font-size: .8rem; color: var(--liftly-subtext); }
+.membro-nome, .membro-info { white-space: normal; overflow-wrap: anywhere; }
+@media (max-width: 380px) {
+  .chat-mensagens { padding: 10px; }
+  .chat-envio { gap: 4px; padding: 8px; }
+  .mensagem-balao { max-width: 90%; }
+  .posicao { width: 24px; margin-right: 8px; }
+}
+
+.modal-foto ion-content { --background: #121212; }
+.foto-ampliada { min-height: 100%; display: grid; place-items: center; padding: 16px; }
+.foto-ampliada img { max-width: 100%; max-height: 80dvh; object-fit: contain; }

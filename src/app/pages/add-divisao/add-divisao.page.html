@@ -4,11 +4,6 @@
       <ion-back-button defaultHref="/tabs/divisoes" text=""></ion-back-button>
     </ion-buttons>
     <ion-title>{{ modoEdicao ? 'Editar Divisão' : 'Nova Divisão' }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="salvar()" class="btn-salvar" [disabled]="!formGroup.valid">
-        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -79,7 +74,7 @@
   </div>
 
   <!-- Botão salvar -->
-  <ion-button expand="block" class="btn-salvar-final" (click)="salvar()" [disabled]="!formGroup.valid">
+  <ion-button expand="block" class="btn-salvar-final" (click)="salvar()" [disabled]="!formGroup.valid || salvando">
     {{ modoEdicao ? 'Salvar alterações' : 'Criar Divisão' }}
   </ion-button>
 
