@@ -60,8 +60,7 @@ export class CadastroPage {
         this.navController.navigateRoot('/login');
       },
       error: (erro) => {
-        if (erro.status === 409) this.exibirMensagem('E-mail já cadastrado.');
-        else this.exibirMensagem('Erro ao cadastrar. Verifique se a API está rodando.');
+        /* A notificação é exibida pelo interceptor da API. */
       }
     });
   }

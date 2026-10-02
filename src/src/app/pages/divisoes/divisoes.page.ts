@@ -57,7 +57,7 @@ export class DivisoesPage implements OnInit {
   }
 
   carregar() {
-    this.divisoes = this.divisaoService.listarPorUsuario(this.usuario.id);
+    this.divisaoService.listarPorUsuario(this.usuario.id).subscribe(divisoes => this.divisoes = divisoes);
   }
 
   editar(divisao: DivisaoModel, sliding: IonItemSliding) {
@@ -76,9 +76,13 @@ export class DivisoesPage implements OnInit {
           text: 'Excluir',
           role: 'destructive',
           handler: () => {
-            this.divisaoService.excluir(divisao.id);
-            this.exibirMensagem('Divisão excluída com sucesso!');
-            this.carregar();
+            this.divisaoService.excluir(divisao.id).subscribe({
+              next: () => {
+                this.exibirMensagem('Divisão excluída com sucesso!');
+                this.carregar();
+              },
+              error: () => {}
+            });
           }
         }
       ]

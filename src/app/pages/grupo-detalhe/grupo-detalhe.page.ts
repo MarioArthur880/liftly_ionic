@@ -91,7 +91,7 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
       },
       error: () => {
         this.carregando = false;
-        this.exibirMensagem('Erro ao carregar o grupo.');
+        /* A notificação é exibida pelo interceptor da API. */
       }
     });
   }
@@ -142,7 +142,7 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
       },
       error: () => {
         this.enviandoMensagem = false;
-        this.exibirMensagem('Erro ao enviar mensagem.');
+        /* A notificação é exibida pelo interceptor da API. */
       }
     });
   }
@@ -239,12 +239,7 @@ export class GrupoDetalhePage implements OnInit, OnDestroy {
             this.grupoService.convidar(this.grupo.id, email, this.usuarioId).subscribe({
               next: () => this.exibirMensagem('Convite enviado!'),
               error: (erro) => {
-                const mensagem = erro.status === 404
-                  ? 'Não encontramos um usuário Liftly com esse e-mail.'
-                  : erro.status === 409
-                    ? 'Esse usuário já faz parte do grupo ou já possui convite pendente.'
-                    : 'Erro ao enviar convite.';
-                this.exibirMensagem(mensagem);
+                /* A notificação é exibida pelo interceptor da API. */
               }
             });
             return true;

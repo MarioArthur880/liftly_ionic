@@ -43,13 +43,10 @@ export class LoginPage {
 
   autenticar() {
     const { email, senha } = this.formGroup.value;
-    const usuario = this.authService.autenticar(email, senha);
-    if (usuario) {
-      this.authService.salvarSessao(usuario);
-      this.navController.navigateRoot('/tabs/dashboard');
-    } else {
-      this.exibirMensagem('E-mail ou senha incorretos.');
-    }
+    this.authService.autenticar(email, senha).subscribe({
+      next: () => this.navController.navigateRoot('/tabs/dashboard'),
+      error: () => {}
+    });
   }
 
   toggleSenha() {

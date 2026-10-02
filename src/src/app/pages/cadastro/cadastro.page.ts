@@ -54,13 +54,15 @@ export class CadastroPage {
     usuario.email = this.formGroup.value.email;
     usuario.senha = this.formGroup.value.senha;
 
-    const sucesso = this.authService.cadastrar(usuario);
-    if (sucesso) {
-      this.exibirMensagem('Conta criada com sucesso!');
-      this.navController.navigateRoot('/login');
-    } else {
-      this.exibirMensagem('E-mail já cadastrado.');
-    }
+    this.authService.cadastrar(usuario).subscribe({
+      next: () => {
+        this.exibirMensagem('Conta criada com sucesso!');
+        this.navController.navigateRoot('/login');
+      },
+      error: (erro) => {
+        /* A notificação é exibida pelo interceptor da API. */
+      }
+    });
   }
 
   toggleSenha() {

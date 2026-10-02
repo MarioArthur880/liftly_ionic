@@ -94,7 +94,7 @@ export class AddDivisaoPage implements OnInit {
           this.modoEdicao = true;
           this.formGroup.patchValue({ nome: this.divisao.nome, descricao: this.divisao.descricao });
         },
-        error: () => this.exibirMensagem('Divisão não encontrada.')
+        error: () => {}
       });
     }
   }
@@ -200,7 +200,7 @@ export class AddDivisaoPage implements OnInit {
         this.exibirMensagem(this.modoEdicao ? 'Divisão atualizada!' : 'Divisão criada!');
         this.navController.navigateBack('/tabs/divisoes');
       },
-      error: () => { this.salvando = false; this.exibirMensagem('Erro ao salvar divisão. Verifique se a API está rodando.'); }
+      error: () => { this.salvando = false; /* A notificação é exibida pelo interceptor da API. */ }
     });
   }
 

@@ -116,7 +116,7 @@ export class ExecutarTreinoPage implements OnInit, OnDestroy {
           this.dataInicio = new Date().toISOString();
           this.iniciarCronometro();
         },
-        error: () => this.exibirMensagem('Divisão não encontrada.')
+        error: () => {}
       });
     }
   }
@@ -356,7 +356,7 @@ export class ExecutarTreinoPage implements OnInit, OnDestroy {
       error: () => {
         this.salvando = false;
         this.iniciarCronometro();
-        this.exibirMensagem('Erro ao salvar histórico. Tente novamente.');
+        /* A notificação é exibida pelo interceptor da API. */
       }
     });
   }

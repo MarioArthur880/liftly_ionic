@@ -34,6 +34,7 @@ export class AddDivisaoPage implements OnInit {
   divisao: DivisaoModel;
   formGroup: FormGroup;
   modoEdicao = false;
+  salvando = false;
 
   // Modal de seleção de exercício
   modalAberto = false;
@@ -76,22 +77,25 @@ export class AddDivisaoPage implements OnInit {
       series: [3, Validators.compose([Validators.required, Validators.min(1)])],
       repeticoes: [10, Validators.compose([Validators.required, Validators.min(1)])],
       carga: [0, Validators.min(0)],
+      descansoSegundos: [60, [Validators.min(0), Validators.max(3600)]],
       observacao: ['']
     });
   }
 
   ngOnInit() {
-    this.grupos = this.catalogoService.listarGrupos();
-    this.resultadosBusca = this.catalogoService.listarTodos();
+    this.catalogoService.listarGrupos().subscribe(grupos => this.grupos = grupos);
+    this.catalogoService.listarTodos().subscribe(exercicios => this.resultadosBusca = exercicios);
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      const encontrada = this.divisaoService.buscarPorId(id);
-      if (encontrada) {
-        this.divisao = encontrada;
-        this.modoEdicao = true;
-        this.formGroup.patchValue({ nome: this.divisao.nome, descricao: this.divisao.descricao });
-      }
+      this.divisaoService.buscarPorId(id).subscribe({
+        next: (encontrada) => {
+          this.divisao = encontrada;
+          this.modoEdicao = true;
+          this.formGroup.patchValue({ nome: this.divisao.nome, descricao: this.divisao.descricao });
+        },
+        error: () => {}
+      });
     }
   }
 
@@ -99,8 +103,8 @@ export class AddDivisaoPage implements OnInit {
     this.termoBusca = '';
     this.grupoFiltro = '';
     this.exercicioSelecionado = null;
-    this.formConfig.reset({ series: 3, repeticoes: 10, carga: 0, observacao: '' });
-    this.resultadosBusca = this.catalogoService.listarTodos();
+    this.formConfig.reset({ series: 3, repeticoes: 10, carga: 0, descansoSegundos: 60, observacao: '' });
+    this.catalogoService.listarTodos().subscribe(exercicios => this.resultadosBusca = exercicios);
     this.modalAberto = true;
   }
 
@@ -110,11 +114,12 @@ export class AddDivisaoPage implements OnInit {
   }
 
   onBusca() {
-    let lista = this.catalogoService.buscarPorNome(this.termoBusca);
-    if (this.grupoFiltro) {
-      lista = lista.filter(e => e.grupoMuscular === this.grupoFiltro);
-    }
-    this.resultadosBusca = lista;
+    this.catalogoService.buscarPorNome(this.termoBusca).subscribe(lista => {
+      if (this.grupoFiltro) {
+        lista = lista.filter(e => e.grupoMuscular === this.grupoFiltro);
+      }
+      this.resultadosBusca = lista;
+    });
   }
 
   filtrarGrupo(grupo: string) {
@@ -133,19 +138,25 @@ export class AddDivisaoPage implements OnInit {
   confirmarExercicio() {
     if (!this.exercicioSelecionado || !this.formConfig.valid) return;
 
-    const jaAdicionado = this.divisao.exercicios.some(e => e.id === this.exercicioSelecionado!.id);
+    const nomeSelecionado = this.exercicioSelecionado.nome.trim().toLocaleLowerCase('pt-BR');
+    const jaAdicionado = this.divisao.exercicios.some(e =>
+      (e.catalogoId || e.id) === this.exercicioSelecionado!.id ||
+      e.nome.trim().toLocaleLowerCase('pt-BR') === nomeSelecionado
+    );
     if (jaAdicionado) {
       this.exibirMensagem('Este exercício já está na divisão.');
       return;
     }
 
     const ex = new ExercicioModel();
-    ex.id = this.exercicioSelecionado.id;
+    ex.id = '';
+    ex.catalogoId = this.exercicioSelecionado.id;
     ex.nome = this.exercicioSelecionado.nome;
     ex.grupoMuscular = this.exercicioSelecionado.grupoMuscular;
     ex.series = this.formConfig.value.series;
     ex.repeticoes = this.formConfig.value.repeticoes;
     ex.carga = this.formConfig.value.carga;
+    ex.descansoSegundos = this.formConfig.value.descansoSegundos;
     ex.observacao = this.formConfig.value.observacao;
 
     this.divisao.exercicios.push(ex);
@@ -164,7 +175,7 @@ export class AddDivisaoPage implements OnInit {
           text: 'Remover',
           role: 'destructive',
           handler: () => {
-            this.divisao.exercicios = this.divisao.exercicios.filter(e => e.id !== ex.id);
+            this.divisao.exercicios = this.divisao.exercicios.filter(e => e !== ex);
           }
         }
       ]
@@ -173,6 +184,7 @@ export class AddDivisaoPage implements OnInit {
   }
 
   salvar() {
+    if (this.salvando) return;
     if (!this.formGroup.valid) {
       this.exibirMensagem('Informe o nome da divisão.');
       return;
@@ -182,9 +194,14 @@ export class AddDivisaoPage implements OnInit {
     this.divisao.descricao = this.formGroup.value.descricao;
     this.divisao.usuarioId = usuario.id;
 
-    this.divisaoService.salvar(this.divisao);
-    this.exibirMensagem(this.modoEdicao ? 'Divisão atualizada!' : 'Divisão criada!');
-    this.navController.navigateBack('/tabs/divisoes');
+    this.salvando = true;
+    this.divisaoService.salvar(this.divisao).subscribe({
+      next: () => {
+        this.exibirMensagem(this.modoEdicao ? 'Divisão atualizada!' : 'Divisão criada!');
+        this.navController.navigateBack('/tabs/divisoes');
+      },
+      error: () => { this.salvando = false; /* A notificação é exibida pelo interceptor da API. */ }
+    });
   }
 
   async exibirMensagem(texto: string) {

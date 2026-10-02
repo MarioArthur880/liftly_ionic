@@ -97,7 +97,7 @@ export class ComunidadePage implements OnInit {
                 this.exibirMensagem('Grupo criado com sucesso!');
                 this.carregar();
               },
-              error: () => { this.criandoGrupo = false; this.exibirMensagem('Erro ao criar grupo.'); }
+              error: () => { this.criandoGrupo = false; /* A notificação é exibida pelo interceptor da API. */ }
             });
             return true;
           }
@@ -127,7 +127,7 @@ export class ComunidadePage implements OnInit {
                 this.exibirMensagem('Você entrou no grupo!');
                 this.carregar();
               },
-              error: () => this.exibirMensagem('Código inválido.')
+              error: () => {}
             });
             return true;
           }
@@ -143,14 +143,14 @@ export class ComunidadePage implements OnInit {
         this.exibirMensagem(`Você entrou no grupo "${convite.grupoNome}"!`);
         this.carregar();
       },
-      error: () => this.exibirMensagem('Erro ao aceitar convite.')
+      error: () => {}
     });
   }
 
   recusarConvite(convite: ConviteModel) {
     this.conviteService.recusar(convite.id).subscribe({
       next: () => this.carregar(),
-      error: () => this.exibirMensagem('Erro ao recusar convite.')
+      error: () => {}
     });
   }
 

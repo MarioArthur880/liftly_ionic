@@ -81,7 +81,7 @@ export class DivisoesPage implements OnInit {
                 this.exibirMensagem('Divisão excluída com sucesso!');
                 this.carregar();
               },
-              error: () => this.exibirMensagem('Erro ao excluir divisão.')
+              error: () => {}
             });
           }
         }

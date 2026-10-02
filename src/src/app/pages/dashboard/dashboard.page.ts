@@ -9,7 +9,7 @@ import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
   barbellOutline, flameOutline, trophyOutline,
-  playCircleOutline, personOutline
+  playCircleOutline
 } from 'ionicons/icons';
 
 import { AuthService } from '../../services/auth.service';
@@ -45,8 +45,7 @@ export class DashboardPage implements OnInit {
       'barbell-outline': barbellOutline,
       'flame-outline': flameOutline,
       'trophy-outline': trophyOutline,
-      'play-circle-outline': playCircleOutline,
-      'person-outline': personOutline
+      'play-circle-outline': playCircleOutline
     });
     this.usuario = new UsuarioModel();
   }
@@ -55,9 +54,13 @@ export class DashboardPage implements OnInit {
 
   ionViewWillEnter() {
     this.usuario = this.authService.obterSessao();
-    this.divisoes = this.divisaoService.listarPorUsuario(this.usuario.id);
-    this.totalTreinos = this.divisoes.length;
-    this.totalSessoes = this.historicoService.listarPorUsuario(this.usuario.id).length;
+    this.divisaoService.listarPorUsuario(this.usuario.id).subscribe(divisoes => {
+      this.divisoes = divisoes;
+      this.totalTreinos = divisoes.length;
+    });
+    this.historicoService.listarPorUsuario(this.usuario.id).subscribe(historico => {
+      this.totalSessoes = historico.length;
+    });
   }
 
   iniciarTreino(divisao: DivisaoModel) {

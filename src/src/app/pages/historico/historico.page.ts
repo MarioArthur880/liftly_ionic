@@ -40,7 +40,7 @@ export class HistoricoPage implements OnInit {
 
   ionViewWillEnter() {
     const usuario = this.authService.obterSessao();
-    this.historico = this.historicoService.listarPorUsuario(usuario.id);
+    this.historicoService.listarPorUsuario(usuario.id).subscribe(historico => this.historico = historico);
   }
 
   toggleExpandir(id: string) {

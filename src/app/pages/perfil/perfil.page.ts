@@ -202,7 +202,7 @@ export class PerfilPage implements OnInit {
         this.exibirMensagem('Senha alterada. Entre novamente com a nova senha.');
         this.navController.navigateRoot('/login');
       },
-      error: (erro) => this.exibirMensagem(erro.status === 401 ? 'A senha atual está incorreta.' : 'Erro ao alterar a senha.')
+      error: (erro) => {}
     });
   }
 
@@ -224,7 +224,7 @@ export class PerfilPage implements OnInit {
         this.carregarHistoricoPeso();
         this.exibirMensagem('Perfil atualizado com sucesso!');
       },
-      error: () => this.exibirMensagem('Erro ao atualizar perfil.')
+      error: () => {}
     });
   }
 
@@ -254,7 +254,7 @@ export class PerfilPage implements OnInit {
           text: 'Desativar', role: 'destructive', handler: () => {
             this.authService.desativarConta(this.usuario.id).subscribe({
               next: () => this.navController.navigateRoot('/home'),
-              error: () => this.exibirMensagem('Erro ao desativar conta.')
+              error: () => {}
             });
           }
         }
