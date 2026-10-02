@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
-  barbellOutline, flameOutline, trophyOutline,
+  barbellOutline, flameOutline,
   playCircleOutline
 } from 'ionicons/icons';
 
@@ -44,7 +44,6 @@ export class DashboardPage implements OnInit {
     addIcons({
       'barbell-outline': barbellOutline,
       'flame-outline': flameOutline,
-      'trophy-outline': trophyOutline,
       'play-circle-outline': playCircleOutline
     });
     this.usuario = new UsuarioModel();
